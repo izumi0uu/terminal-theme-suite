@@ -1,0 +1,4 @@
+interface:
+  display_name: "Derive Theme from Image"
+  short_description: "Turn reference images into readable semantic themes"
+  default_prompt: "Use $derive-theme-from-image to derive a readable semantic theme from this reference image."

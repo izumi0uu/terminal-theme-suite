@@ -1,0 +1,4 @@
+interface:
+  display_name: "Find Project Style Config"
+  short_description: "Trace authoritative style sources in unfamiliar projects"
+  default_prompt: "Use $find-project-style-config to locate the authoritative style configuration for this interface."
