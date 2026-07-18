@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "terminal-theme-suite"
+version = "0.1.0"
+description = "Switch iTerm2, Oh My Pi, Herdr, and terminal wallpapers as one theme suite"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+authors = [{ name = "Booker" }]
+keywords = ["iterm2", "terminal", "theme", "oh-my-pi", "herdr"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Operating System :: MacOS",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+]
+dependencies = ["tomlkit>=0.12,<1"]
+
+[project.urls]
+Homepage = "https://github.com/izumi0uu/terminal-theme-suite"
+Repository = "https://github.com/izumi0uu/terminal-theme-suite"
+Issues = "https://github.com/izumi0uu/terminal-theme-suite/issues"
+
+[project.scripts]
+term-theme = "terminal_theme_suite.cli:main"
+terminal-theme-suite = "terminal_theme_suite.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+terminal_theme_suite = ["data/themes/*.json"]

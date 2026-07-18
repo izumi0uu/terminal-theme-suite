@@ -1,0 +1,33 @@
+{
+  "id": "catppuccin",
+  "order": 20,
+  "name": "Catppuccin Mocha",
+  "description": "Soft lavender and blue accents on Mocha",
+  "herdr_theme": "catppuccin",
+  "ansi": [
+    "#45475a", "#f38ba8", "#a6e3a1", "#f9e2af",
+    "#89b4fa", "#f5c2e7", "#94e2d5", "#a6adc8",
+    "#585b70", "#f37799", "#89d88b", "#ebd391",
+    "#74a8fc", "#f2aede", "#6bd7ca", "#bac2de"
+  ],
+  "colors": {
+    "background": "#1e1e2e",
+    "background_alt": "#181825",
+    "surface": "#313244",
+    "surface_alt": "#45475a",
+    "foreground": "#cdd6f4",
+    "muted": "#7f849c",
+    "dim": "#6c7086",
+    "accent": "#cba6f7",
+    "accent_alt": "#89b4fa",
+    "red": "#f38ba8",
+    "green": "#a6e3a1",
+    "yellow": "#f9e2af",
+    "blue": "#89b4fa",
+    "cyan": "#89dceb",
+    "teal": "#94e2d5",
+    "orange": "#fab387",
+    "pink": "#f5c2e7",
+    "selection": "#45475a"
+  }
+}

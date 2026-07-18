@@ -1,0 +1,33 @@
+{
+  "id": "dracula",
+  "order": 40,
+  "name": "Dracula",
+  "description": "High-contrast purple and pink on charcoal",
+  "herdr_theme": "dracula",
+  "ansi": [
+    "#21222c", "#ff5555", "#50fa7b", "#f1fa8c",
+    "#bd93f9", "#ff79c6", "#8be9fd", "#f8f8f2",
+    "#6272a4", "#ff6e6e", "#69ff94", "#ffffa5",
+    "#d6acff", "#ff92df", "#a4ffff", "#ffffff"
+  ],
+  "colors": {
+    "background": "#282a36",
+    "background_alt": "#1f2029",
+    "surface": "#343746",
+    "surface_alt": "#44475a",
+    "foreground": "#f8f8f2",
+    "muted": "#6272a4",
+    "dim": "#44475a",
+    "accent": "#bd93f9",
+    "accent_alt": "#ff79c6",
+    "red": "#ff5555",
+    "green": "#50fa7b",
+    "yellow": "#f1fa8c",
+    "blue": "#bd93f9",
+    "cyan": "#8be9fd",
+    "teal": "#8be9fd",
+    "orange": "#ffb86c",
+    "pink": "#ff79c6",
+    "selection": "#44475a"
+  }
+}

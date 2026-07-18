@@ -1,0 +1,33 @@
+{
+  "id": "tokyo-night",
+  "order": 30,
+  "name": "Tokyo Night",
+  "description": "Cool blue night palette with violet accents",
+  "herdr_theme": "tokyo-night",
+  "ansi": [
+    "#15161e", "#f7768e", "#9ece6a", "#e0af68",
+    "#7aa2f7", "#bb9af7", "#7dcfff", "#a9b1d6",
+    "#414868", "#f7768e", "#9ece6a", "#e0af68",
+    "#7aa2f7", "#bb9af7", "#7dcfff", "#c0caf5"
+  ],
+  "colors": {
+    "background": "#1a1b26",
+    "background_alt": "#16161e",
+    "surface": "#24283b",
+    "surface_alt": "#414868",
+    "foreground": "#c0caf5",
+    "muted": "#565f89",
+    "dim": "#51597d",
+    "accent": "#bb9af7",
+    "accent_alt": "#7aa2f7",
+    "red": "#f7768e",
+    "green": "#9ece6a",
+    "yellow": "#e0af68",
+    "blue": "#7aa2f7",
+    "cyan": "#7dcfff",
+    "teal": "#73daca",
+    "orange": "#ff9e64",
+    "pink": "#bb9af7",
+    "selection": "#2a2f41"
+  }
+}
