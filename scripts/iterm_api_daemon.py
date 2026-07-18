@@ -27,6 +27,17 @@ LIVE_PROFILE_KEYS = {
     "Keyboard Map",
 }
 LIVE_PROFILE_KEYS.update(f"Ansi {index} Color" for index in range(16))
+API_TIMEOUT = 3
+
+
+async def _set_session_profile(session, profile):
+    try:
+        await asyncio.wait_for(
+            session.async_set_profile_properties(profile), timeout=API_TIMEOUT
+        )
+    except Exception:
+        return False
+    return True
 
 
 @iterm2.RPC
@@ -41,8 +52,11 @@ async def terminal_theme_suite_switch(profile_guid, scope):
 
     profiles = []
     for _ in range(20):
-        profiles = await iterm2.PartialProfile.async_query(
-            terminal_theme_suite_switch.rpc_connection, guids=[profile_guid]
+        profiles = await asyncio.wait_for(
+            iterm2.PartialProfile.async_query(
+                terminal_theme_suite_switch.rpc_connection, guids=[profile_guid]
+            ),
+            timeout=API_TIMEOUT,
         )
         if profiles:
             break
@@ -50,7 +64,9 @@ async def terminal_theme_suite_switch(profile_guid, scope):
     if not profiles:
         raise RuntimeError(f"iTerm2 has not loaded profile {profile_guid}")
 
-    profile = await profiles[0].async_get_full_profile()
+    profile = await asyncio.wait_for(
+        profiles[0].async_get_full_profile(), timeout=API_TIMEOUT
+    )
     session_profile = iterm2.LocalWriteOnlyProfile(
         {
             key: value
@@ -58,8 +74,11 @@ async def terminal_theme_suite_switch(profile_guid, scope):
             if key in LIVE_PROFILE_KEYS
         }
     )
-    await profile.async_make_default()
-    app = await iterm2.async_get_app(terminal_theme_suite_switch.rpc_connection)
+    await asyncio.wait_for(profile.async_make_default(), timeout=API_TIMEOUT)
+    app = await asyncio.wait_for(
+        iterm2.async_get_app(terminal_theme_suite_switch.rpc_connection),
+        timeout=API_TIMEOUT,
+    )
     if scope == "current":
         window = app.current_window
         session = window.current_tab.current_session if window else None
@@ -71,14 +90,15 @@ async def terminal_theme_suite_switch(profile_guid, scope):
             for tab in window.tabs
             for session in tab.sessions
         ]
-    for session in sessions:
-        await session.async_set_profile_properties(session_profile)
-    return len(sessions)
+    results = await asyncio.gather(
+        *(_set_session_profile(session, session_profile) for session in sessions)
+    )
+    return sum(results)
 
 
 async def main(connection):
     await terminal_theme_suite_ping.async_register(connection)
-    await terminal_theme_suite_switch.async_register(connection, timeout=30)
+    await terminal_theme_suite_switch.async_register(connection, timeout=15)
     await iterm2.async_wait_forever()
 
 
