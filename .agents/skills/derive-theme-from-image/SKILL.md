@@ -43,7 +43,7 @@ position, quiet regions, crop risk, brightness distribution, and visual complexi
 Use the read-only palette script for repeatable measurements:
 
 ```bash
-uv run --with pillow \
+uv run --no-project --with pillow \
   .agents/skills/derive-theme-from-image/scripts/extract_palette.py \
   /path/to/reference.png --colors 10
 ```
@@ -78,7 +78,8 @@ detected target and its validation checklist.
 ### 4. Check contrast against actual surfaces
 
 Test primary text, muted text, links/accents, borders or focus, selection pairs, and
-status colors against every surface where they appear.
+status colors against every surface where they appear. Use the flat checker for a quick
+single-surface measurement:
 
 ```bash
 python .agents/skills/derive-theme-from-image/scripts/check_contrast.py \
@@ -90,6 +91,29 @@ python .agents/skills/derive-theme-from-image/scripts/check_contrast.py \
 Target at least `4.5:1` for normal text and `3:1` for large text or essential graphical
 controls. Prefer `7:1` for persistent terminal body text when the image allows it.
 
+For OMP or Herdr, audit the complete role-to-surface matrix instead of checking a few
+representative colors:
+
+```bash
+uv run --no-project --with tomli \
+  .agents/skills/derive-theme-from-image/scripts/audit_terminal_theme.py \
+  --omp /path/to/generated-theme.json \
+  --herdr /path/to/config.toml \
+  --terminal-background '#D09054' \
+  --min-score 85
+```
+
+Use the default weighted `85/100` gate unless the user or project defines another
+threshold. A passing score means usable, not perfect. Always report every failed,
+missing, invalid, unknown, or unresolved role and its likely effect. Add `--strict`
+only for an explicitly requested release-grade audit.
+
+Read
+[references/omp-herdr-role-matrix.md](references/omp-herdr-role-matrix.md) when working
+on OMP or Herdr. Treat
+[references/terminal-role-matrix.json](references/terminal-role-matrix.json) as the
+machine-readable classification authority.
+
 ### 5. Map to the real target structure
 
 Map semantic roles through the authoritative adapter discovered in the project. For
@@ -99,7 +123,33 @@ and selected text. For image-backed themes, also verify blend, scale mode, and c
 Do not emit unsupported keys. Validate against the target schema or configuration
 checker before writing.
 
-### 6. Apply only with authorization
+### 6. Sample wallpaper-backed surfaces
+
+A flat background check is only an approximation when text renders over a wallpaper.
+Simulate the real viewport, scale mode, crop anchor, and background blend:
+
+```bash
+uv run --no-project --with pillow \
+  .agents/skills/derive-theme-from-image/scripts/sample_wallpaper_contrast.py \
+  --image /path/to/wallpaper.png \
+  --background '#D09054' \
+  --blend 0.65 \
+  --mode fill \
+  --anchor bottom \
+  --viewport 1200x800 \
+  --viewport 700x900 \
+  --foreground 'text=#120F0D:4.5' \
+  --foreground 'muted=#2F2822:4.5' \
+  --min-pass-coverage 90
+```
+
+Interpret `--blend 0` as image only and `--blend 1` as solid background only. Confirm
+that semantic against the target application's actual implementation. Use the default
+`90%` sampled-pixel coverage as a soft gate. Keep minimum, P1, P5, and worst-region
+failures as warnings even when coverage passes; one extreme pixel must not fail the
+theme. Use `--strict` only when every sampled pixel must pass.
+
+### 7. Apply only with authorization
 
 When authorized:
 
@@ -110,12 +160,14 @@ When authorized:
 5. verify current and newly created views when runtime defaults differ;
 6. roll back if validation fails.
 
-### 7. Screenshot and iterate
+### 8. Screenshot and iterate
 
 Capture the real target at representative dimensions. Inspect body text, muted labels,
 links, syntax/code, status line, borders, selected state, focus, success/warning/error,
 and image crop. Change one semantic relationship per iteration, then rerun contrast
-checks. Do not declare success from palette math alone.
+checks. For OMP and Herdr, execute the representative state checklist in
+[references/omp-herdr-role-matrix.md](references/omp-herdr-role-matrix.md). Do not
+declare success from palette math alone.
 
 ## Output Format
 
@@ -132,6 +184,8 @@ Also include:
 - image composition and crop findings;
 - semantic token set;
 - target mapping path/format;
+- weighted configuration score, selected threshold, and every failed role/surface pair;
+- wallpaper coverage by viewport and role, including P5 and worst-region warnings;
 - preserved settings;
 - validation results;
 - files changed and backup path, or `No files changed` for analysis-only work;

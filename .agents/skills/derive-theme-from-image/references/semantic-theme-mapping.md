@@ -28,6 +28,13 @@ roles readable.
 - ANSI colors must be tested against the terminal background in both normal and bright
   forms; a hue being recognizable is not enough.
 
+A flat foreground/background ratio is insufficient when text appears over a wallpaper
+or when one role is reused across multiple containers. For OMP and Herdr, use the full
+role and screenshot coverage in [omp-herdr-role-matrix.md](omp-herdr-role-matrix.md),
+then sample the rendered wallpaper after scale, crop, anchor, and blend. Judge the
+wallpaper with a configurable pixel-coverage gate while retaining minimum and
+low-percentile failures as warnings.
+
 ## Image-Aware Adjustments
 
 1. Record the raw color and its coverage before changing it.

@@ -1,0 +1,233 @@
+{
+  "version": 1,
+  "omp": {
+    "roles_path": "colors",
+    "surfaces": {
+      "page": {"path": "export.pageBg"},
+      "card": {"path": "export.cardBg"},
+      "info": {"path": "export.infoBg"},
+      "selection": {"path": "colors.selectedBg"},
+      "user-message": {"path": "colors.userMessageBg"},
+      "custom-message": {"path": "colors.customMessageBg"},
+      "tool-pending": {"path": "colors.toolPendingBg"},
+      "tool-success": {"path": "colors.toolSuccessBg"},
+      "tool-error": {"path": "colors.toolErrorBg"},
+      "status-line": {"path": "colors.statusLineBg"}
+    },
+    "surface_roles": [
+      "selectedBg",
+      "userMessageBg",
+      "customMessageBg",
+      "toolPendingBg",
+      "toolSuccessBg",
+      "toolErrorBg",
+      "statusLineBg"
+    ],
+    "role_groups": {
+      "global-text": ["text", "thinkingText", "muted", "dim"],
+      "global-status": ["success", "error", "warning"],
+      "global-accent": [
+        "accent",
+        "thinkingOff",
+        "thinkingMinimal",
+        "thinkingLow",
+        "thinkingMedium",
+        "thinkingHigh",
+        "thinkingXhigh",
+        "bashMode",
+        "pythonMode"
+      ],
+      "global-graphics": ["border", "borderAccent", "borderMuted"],
+      "user-message-text": ["userMessageText"],
+      "custom-message-text": ["customMessageText", "customMessageLabel"],
+      "tool-text": ["toolTitle", "toolOutput"],
+      "markdown-text": [
+        "mdHeading",
+        "mdLink",
+        "mdLinkUrl",
+        "mdCode",
+        "mdCodeBlock",
+        "mdQuote",
+        "mdListBullet"
+      ],
+      "markdown-graphics": ["mdCodeBlockBorder", "mdQuoteBorder", "mdHr"],
+      "diff-text": ["toolDiffAdded", "toolDiffRemoved", "toolDiffContext"],
+      "syntax-text": [
+        "syntaxComment",
+        "syntaxKeyword",
+        "syntaxFunction",
+        "syntaxVariable",
+        "syntaxString",
+        "syntaxNumber",
+        "syntaxType",
+        "syntaxOperator",
+        "syntaxPunctuation"
+      ],
+      "status-line-text": [
+        "statusLineModel",
+        "statusLinePath",
+        "statusLineGitClean",
+        "statusLineGitDirty",
+        "statusLineContext",
+        "statusLineSpend",
+        "statusLineStaged",
+        "statusLineDirty",
+        "statusLineUntracked",
+        "statusLineOutput",
+        "statusLineCost",
+        "statusLineSubagents"
+      ],
+      "status-line-graphics": ["statusLineSep"]
+    },
+    "rules": [
+      {
+        "group": "global-text",
+        "surfaces": ["page", "card", "info"],
+        "min_ratio": 4.5,
+        "kind": "text",
+        "weight": 3
+      },
+      {
+        "group": "global-status",
+        "surfaces": ["page", "card", "info"],
+        "min_ratio": 4.5,
+        "kind": "text",
+        "weight": 2
+      },
+      {
+        "group": "global-accent",
+        "surfaces": ["page", "card", "info"],
+        "min_ratio": 4.5,
+        "kind": "text",
+        "weight": 1.5
+      },
+      {
+        "group": "global-graphics",
+        "surfaces": ["page", "card", "info"],
+        "min_ratio": 3.0,
+        "kind": "graphic",
+        "weight": 1
+      },
+      {
+        "roles": ["text"],
+        "surfaces": ["selection"],
+        "min_ratio": 4.5,
+        "kind": "selected-text",
+        "weight": 3
+      },
+      {
+        "group": "user-message-text",
+        "surfaces": ["user-message"],
+        "min_ratio": 4.5,
+        "kind": "text",
+        "weight": 3
+      },
+      {
+        "group": "custom-message-text",
+        "surfaces": ["custom-message"],
+        "min_ratio": 4.5,
+        "kind": "text",
+        "weight": 3
+      },
+      {
+        "group": "tool-text",
+        "surfaces": ["tool-pending", "tool-success", "tool-error"],
+        "min_ratio": 4.5,
+        "kind": "text",
+        "weight": 3
+      },
+      {
+        "group": "markdown-text",
+        "surfaces": ["page", "card", "info"],
+        "min_ratio": 4.5,
+        "kind": "text",
+        "weight": 2
+      },
+      {
+        "group": "markdown-graphics",
+        "surfaces": ["page", "card", "info"],
+        "min_ratio": 3.0,
+        "kind": "graphic",
+        "weight": 1
+      },
+      {
+        "group": "diff-text",
+        "surfaces": ["info", "tool-pending", "tool-success", "tool-error"],
+        "min_ratio": 4.5,
+        "kind": "text",
+        "weight": 2
+      },
+      {
+        "group": "syntax-text",
+        "surfaces": ["page", "card", "info"],
+        "min_ratio": 4.5,
+        "kind": "text",
+        "weight": 2
+      },
+      {
+        "group": "status-line-text",
+        "surfaces": ["status-line"],
+        "min_ratio": 4.5,
+        "kind": "text",
+        "weight": 2
+      },
+      {
+        "group": "status-line-graphics",
+        "surfaces": ["status-line"],
+        "min_ratio": 3.0,
+        "kind": "graphic",
+        "weight": 1
+      }
+    ]
+  },
+  "herdr": {
+    "roles_path": "theme.custom",
+    "surfaces": {
+      "panel": {
+        "path": "theme.custom.panel_bg",
+        "fallback": "terminal-background"
+      },
+      "surface0": {"path": "theme.custom.surface0"},
+      "surface1": {"path": "theme.custom.surface1"},
+      "surface-dim": {"path": "theme.custom.surface_dim"}
+    },
+    "surface_roles": ["panel_bg", "surface0", "surface1", "surface_dim"],
+    "role_groups": {
+      "body-text": ["text", "subtext0"],
+      "overlays": ["overlay0", "overlay1"],
+      "accent-text": [
+        "mauve",
+        "green",
+        "yellow",
+        "red",
+        "blue",
+        "teal",
+        "peach",
+        "accent"
+      ]
+    },
+    "rules": [
+      {
+        "group": "body-text",
+        "surfaces": ["panel", "surface0", "surface1", "surface-dim"],
+        "min_ratio": 4.5,
+        "kind": "text",
+        "weight": 3
+      },
+      {
+        "group": "overlays",
+        "surfaces": ["panel", "surface0", "surface1", "surface-dim"],
+        "min_ratio": 3.0,
+        "kind": "graphic",
+        "weight": 1
+      },
+      {
+        "group": "accent-text",
+        "surfaces": ["panel", "surface0", "surface1", "surface-dim"],
+        "min_ratio": 4.5,
+        "kind": "text",
+        "weight": 2
+      }
+    ]
+  }
+}
