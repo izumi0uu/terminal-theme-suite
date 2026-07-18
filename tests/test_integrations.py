@@ -1,5 +1,6 @@
 import tempfile
 import unittest
+from datetime import datetime, timezone
 import json
 from pathlib import Path
 import subprocess
@@ -31,17 +32,193 @@ class IntegrationTests(unittest.TestCase):
         theme = next(theme for theme in self.config.themes if theme.id == "hero-amber")
         with tempfile.TemporaryDirectory() as temporary:
             target = Path(temporary) / "terminal-theme-suite.json"
+            generation = Path(temporary) / "omp-generation.json"
             with (
                 patch.object(omp, "OMP_ACTIVE_THEME", target),
+                patch.object(omp, "OMP_GENERATION_FILE", generation),
+                patch.object(omp, "OMP_RUNTIME_DIR", Path(temporary) / "runtime"),
                 patch.object(omp, "_run") as run,
+                patch.object(omp, "_running_omp_processes", return_value={}),
             ):
                 message, warning = omp.apply_theme(theme)
 
             self.assertTrue(target.is_file())
+            request = json.loads(generation.read_text(encoding="utf-8"))
+            self.assertEqual(len(request["generation"]), 36)
+            self.assertEqual(len(request["theme_sha256"]), 64)
 
         run.assert_not_called()
-        self.assertIn("live reload", message)
-        self.assertIsNone(warning)
+        self.assertEqual(message, "OMP theme file updated")
+        self.assertIn("theme will apply on next OMP start", warning)
+
+    def test_omp_runtime_status_requires_loaded_extension_presence(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            with (
+                patch.object(omp, "OMP_RUNTIME_DIR", Path(temporary)),
+                patch.object(
+                    omp, "OMP_GENERATION_FILE", Path(temporary) / "generation"
+                ),
+                patch.object(
+                    omp, "_running_omp_processes", return_value={12345: 1000.0}
+                ),
+            ):
+                ready, detail = omp.runtime_reload_status()
+
+        self.assertFalse(ready)
+        self.assertIn("not loaded by OMP PID(s): 12345", detail)
+
+    def test_omp_runtime_status_accepts_matching_presence(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            runtime = Path(temporary)
+            generation = runtime / "generation.json"
+            generation.write_text(
+                json.dumps({"generation": "generation-1", "theme_sha256": "abc123"}),
+                encoding="utf-8",
+            )
+            (runtime / "12345.json").write_text(
+                json.dumps(
+                    {
+                        "pid": 12345,
+                        "theme": "terminal-theme-suite",
+                        "process_started_at": "1970-01-01T00:16:40+00:00",
+                        "token": "runtime-token",
+                        "ready": True,
+                        "applied_generation": "generation-1",
+                        "applied_theme_sha256": "abc123",
+                    }
+                ),
+                encoding="utf-8",
+            )
+            with (
+                patch.object(omp, "OMP_RUNTIME_DIR", runtime),
+                patch.object(omp, "OMP_GENERATION_FILE", generation),
+                patch.object(omp, "_pid_running", return_value=True),
+                patch.object(
+                    omp, "_running_omp_processes", return_value={12345: 1000.0}
+                ),
+            ):
+                ready, detail = omp.runtime_reload_status()
+
+        self.assertTrue(ready)
+        self.assertIn("watcher active in OMP PID(s): 12345", detail)
+        self.assertIn("generation generation-1 acknowledged", detail)
+
+    def test_omp_runtime_rejects_reused_pid_with_different_start_time(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            runtime = Path(temporary)
+            (runtime / "12345.json").write_text(
+                json.dumps(
+                    {
+                        "pid": 12345,
+                        "theme": "terminal-theme-suite",
+                        "process_started_at": "1970-01-01T00:16:40+00:00",
+                        "token": "old-process-token",
+                        "ready": True,
+                    }
+                ),
+                encoding="utf-8",
+            )
+            with (
+                patch.object(omp, "OMP_RUNTIME_DIR", runtime),
+                patch.object(omp, "_pid_running", return_value=True),
+            ):
+                states = omp._runtime_states({12345: 2000.0})
+
+        self.assertEqual(states, {})
+
+    def test_omp_wait_accepts_matching_generation_ack(self):
+        generation = {"generation": "generation-1", "theme_sha256": "abc123"}
+        with tempfile.TemporaryDirectory() as temporary:
+            runtime = Path(temporary)
+            (runtime / "12345.json").write_text(
+                json.dumps(
+                    {
+                        "pid": 12345,
+                        "theme": "terminal-theme-suite",
+                        "process_started_at": "1970-01-01T00:16:40+00:00",
+                        "token": "runtime-token",
+                        "ready": True,
+                        "applied_generation": "generation-1",
+                        "applied_theme_sha256": "abc123",
+                        "applied_at": datetime.now(timezone.utc).isoformat(),
+                        "error": None,
+                        "error_generation": None,
+                    }
+                ),
+                encoding="utf-8",
+            )
+            with (
+                patch.object(omp, "OMP_RUNTIME_DIR", runtime),
+                patch.object(omp, "_pid_running", return_value=True),
+                patch.object(
+                    omp, "_running_omp_processes", return_value={12345: 1000.0}
+                ),
+            ):
+                ready, detail = omp._wait_for_generation(generation, timeout=0)
+
+        self.assertTrue(ready)
+        self.assertIn("generation-1 acknowledged by OMP PID(s): 12345", detail)
+
+    def test_omp_wait_reports_ack_timeout(self):
+        generation = {"generation": "generation-2", "theme_sha256": "def456"}
+        with tempfile.TemporaryDirectory() as temporary:
+            runtime = Path(temporary)
+            (runtime / "12345.json").write_text(
+                json.dumps(
+                    {
+                        "pid": 12345,
+                        "theme": "terminal-theme-suite",
+                        "process_started_at": "1970-01-01T00:16:40+00:00",
+                        "token": "runtime-token",
+                        "ready": True,
+                        "applied_generation": "generation-1",
+                        "applied_theme_sha256": "abc123",
+                        "error": None,
+                    }
+                ),
+                encoding="utf-8",
+            )
+            with (
+                patch.object(omp, "OMP_RUNTIME_DIR", runtime),
+                patch.object(omp, "_pid_running", return_value=True),
+                patch.object(
+                    omp, "_running_omp_processes", return_value={12345: 1000.0}
+                ),
+            ):
+                ready, detail = omp._wait_for_generation(generation, timeout=0)
+
+        self.assertFalse(ready)
+        self.assertIn("did not acknowledge generation generation-2", detail)
+
+    def test_omp_wait_reports_extension_error(self):
+        generation = {"generation": "generation-3", "theme_sha256": "789abc"}
+        with tempfile.TemporaryDirectory() as temporary:
+            runtime = Path(temporary)
+            (runtime / "12345.json").write_text(
+                json.dumps(
+                    {
+                        "pid": 12345,
+                        "theme": "terminal-theme-suite",
+                        "process_started_at": "1970-01-01T00:16:40+00:00",
+                        "token": "runtime-token",
+                        "ready": False,
+                        "error": "theme schema rejected",
+                        "error_generation": "generation-3",
+                    }
+                ),
+                encoding="utf-8",
+            )
+            with (
+                patch.object(omp, "OMP_RUNTIME_DIR", runtime),
+                patch.object(omp, "_pid_running", return_value=True),
+                patch.object(
+                    omp, "_running_omp_processes", return_value={12345: 1000.0}
+                ),
+            ):
+                ready, detail = omp._wait_for_generation(generation, timeout=0)
+
+        self.assertFalse(ready)
+        self.assertIn("theme schema rejected", detail)
 
     def test_herdr_update_preserves_unrelated_sections(self):
         hero = next(theme for theme in self.config.themes if theme.id == "hero-amber")
@@ -75,6 +252,13 @@ class IntegrationTests(unittest.TestCase):
         self.assertIn('pi.on("session_start"', source)
         self.assertIn("ctx.ui.setTheme(THEME_NAME)", source)
         self.assertIn('const THEME_NAME = "terminal-theme-suite"', source)
+        self.assertIn('pi.on("session_shutdown"', source)
+        self.assertIn("fs.watch(configRoot", source)
+        self.assertIn("generationKey === observedGenerationKey", source)
+        self.assertIn("randomUUID()", source)
+        self.assertIn("applied_generation", source)
+        self.assertIn("process.pid", source)
+        self.assertNotIn("setInterval", source)
 
     def test_omp_extension_install_preserves_existing_extensions(self):
         with tempfile.TemporaryDirectory() as temporary:

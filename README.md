@@ -134,7 +134,15 @@ to use Nerd Font symbols during `term-theme init`. A small OMP extension selects
 managed theme through OMP's in-process API at startup. This enables OMP's
 theme watcher, so later switches repaint every OMP process that loaded the extension.
 Processes that were already running when the extension was first installed need one
-restart; restarting is not required after later theme switches.
+restart; restarting iTerm2 alone is insufficient when Herdr keeps the OMP pane alive.
+The extension publishes one per-process presence file under
+`~/.config/terminal-theme-suite/omp-runtime/`, identified by PID, process start time,
+and a random token. Each switch atomically writes `omp-generation.json`; the extension
+reloads the theme and acknowledges that exact generation and theme hash. `doctor`,
+`omp-live-reload status`, and theme-switch output therefore distinguish an installed
+extension from a running watcher and a theme that was actually applied. There is no
+periodic heartbeat or background write. Restarting is not required after later theme
+switches.
 
 The switch hot path only atomically replaces the managed OMP theme JSON; it does not
 start the OMP CLI. iTerm2, OMP, and Herdr updates run concurrently after the target
@@ -194,7 +202,8 @@ term-theme sync
 - Existing iTerm2 profiles are not rewritten.
 - Herdr config changes are validated and rolled back when validation fails.
 - OMP model, provider, and authentication settings are not modified.
-- The OMP extension only calls the local `ctx.ui.setTheme` API at session startup.
+- The OMP extension only calls the local `ctx.ui.setTheme` API at session startup and
+  when `term-theme` publishes a new generation.
 
 ## 中文快速说明
 
@@ -217,7 +226,7 @@ iTerm2 内快捷键：
 - `Control+Option+T`：下一套
 - `Control+Option+Shift+T`：上一套
 
-安装或运行 `term-theme init` 后，之前已经运行的 OMP 需要重开一次以加载扩展。此后 OMP 会监听活动主题文件，切换时可自动刷新。
+安装或运行 `term-theme init` 后，之前已经运行的 OMP 需要重开一次以加载扩展。Herdr 会保留内部进程，所以只重启 iTerm2 不会重启 Herdr 里的 OMP。扩展加载后会在 `~/.config/terminal-theme-suite/omp-runtime/` 写一次运行状态；每次切换只在主题真正重载后写入对应 generation 和主题 hash 的 ACK，没有定时心跳。`doctor` 和 `omp-live-reload status` 只有在运行中的 OMP 真正加载扩展且最新主题已确认后才会报告 watcher active。
 
 普通切换只原子替换 OMP 主题 JSON，iTerm2、OMP、Herdr 会并行更新。多个快捷键命令会通过文件锁依次执行，避免多次切换彼此交错。`term-theme doctor` 如果提示 OMP 配置漂移，运行：
 

@@ -42,6 +42,8 @@ OMP_DIR = _env_path("TTS_OMP_DIR", HOME / ".omp" / "agent")
 OMP_THEME_DIR = OMP_DIR / "themes"
 OMP_ACTIVE_THEME = OMP_THEME_DIR / "terminal-theme-suite.json"
 OMP_LIVE_RELOAD_EXTENSION = CONFIG_DIR / "omp-live-reload.ts"
+OMP_GENERATION_FILE = CONFIG_DIR / "omp-generation.json"
+OMP_RUNTIME_DIR = CONFIG_DIR / "omp-runtime"
 
 HERDR_DIR = _env_path("TTS_HERDR_DIR", HOME / ".config" / "herdr")
 HERDR_CONFIG = HERDR_DIR / "config.toml"
