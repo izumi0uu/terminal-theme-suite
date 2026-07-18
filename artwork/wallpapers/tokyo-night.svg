@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1200" viewBox="0 0 1920 1200">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#10111b"/>
+      <stop offset="0.62" stop-color="#1a1b2e"/>
+      <stop offset="1" stop-color="#293356"/>
+    </linearGradient>
+    <linearGradient id="haze" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#7aa2f7" stop-opacity="0"/>
+      <stop offset="0.55" stop-color="#7dcfff" stop-opacity="0.3"/>
+      <stop offset="1" stop-color="#bb9af7" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1200" fill="url(#sky)"/>
+  <circle cx="1490" cy="690" r="175" fill="#bb9af7" opacity="0.18"/>
+  <circle cx="1490" cy="690" r="122" fill="#7dcfff" opacity="0.12"/>
+  <rect x="0" y="690" width="1920" height="210" fill="url(#haze)"/>
+  <g fill="#20243a">
+    <path d="M0 835 H115 V650 H225 V770 H335 V590 H455 V730 H565 V675 H680 V820 H0 Z"/>
+    <path d="M635 835 H760 V710 H860 V535 H945 V445 H975 V535 H1065 V640 H1180 V570 H1280 V835 Z"/>
+    <path d="M1215 835 H1330 V700 H1435 V615 H1545 V750 H1640 V545 H1745 V690 H1840 V620 H1920 V835 Z"/>
+  </g>
+  <g fill="#7dcfff" opacity="0.54">
+    <rect x="145" y="690" width="12" height="32"/><rect x="375" y="635" width="13" height="28"/><rect x="410" y="635" width="13" height="28"/>
+    <rect x="885" y="578" width="12" height="34"/><rect x="925" y="578" width="12" height="34"/><rect x="1010" y="665" width="13" height="30"/>
+    <rect x="1370" y="735" width="12" height="30"/><rect x="1678" y="590" width="12" height="32"/><rect x="1720" y="590" width="12" height="32"/>
+  </g>
+  <g fill="#f7768e" opacity="0.48">
+    <rect x="185" y="690" width="12" height="32"/><rect x="800" y="748" width="13" height="30"/><rect x="1095" y="690" width="12" height="30"/>
+    <rect x="1480" y="660" width="12" height="30"/><rect x="1800" y="675" width="12" height="30"/>
+  </g>
+  <path d="M0 845 C320 805 515 895 785 865 C1050 835 1265 790 1540 838 C1700 866 1815 852 1920 830 L1920 1200 L0 1200 Z" fill="#141622"/>
+  <path d="M0 1005 C320 950 525 1045 825 1030 C1135 1015 1385 930 1660 975 C1775 995 1860 992 1920 980 L1920 1200 L0 1200 Z" fill="#0e1019"/>
+  <g stroke="#7aa2f7" stroke-width="4" opacity="0.22">
+    <path d="M0 920 H1920"/><path d="M0 965 H1920"/><path d="M0 1015 H1920"/>
+    <path d="M300 850 L220 1200"/><path d="M760 850 L720 1200"/><path d="M1160 850 L1205 1200"/><path d="M1600 850 L1720 1200"/>
+  </g>
+</svg>

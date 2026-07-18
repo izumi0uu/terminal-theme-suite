@@ -17,10 +17,10 @@ DEFAULT_CONFIG: Dict[str, Any] = {
     "command_path": None,
     "iterm_daemon": None,
     "themes": {
-        "hero-amber": {"background": None, "blend": 0.65, "enabled": True},
-        "catppuccin": {"background": None, "blend": 0.65, "enabled": True},
-        "tokyo-night": {"background": None, "blend": 0.65, "enabled": True},
-        "dracula": {"background": None, "blend": 0.65, "enabled": True},
+        "hero-amber": {"blend": 0.65, "enabled": True},
+        "catppuccin": {"blend": 0.65, "enabled": True},
+        "tokyo-night": {"blend": 0.65, "enabled": True},
+        "dracula": {"blend": 0.65, "enabled": True},
     },
 }
 
@@ -51,9 +51,21 @@ def write_default_config(force: bool = False) -> Path:
     return CONFIG_FILE
 
 
-def _resolve_background(value: Any) -> Path | None:
-    if not value:
+def _bundled_background(document: Dict[str, Any]) -> Path | None:
+    filename = document.get("wallpaper")
+    if not filename:
         return None
+    resource = resources.files("terminal_theme_suite").joinpath(
+        "data", "backgrounds", str(filename)
+    )
+    return Path(str(resource)).resolve()
+
+
+def _resolve_background(value: Any, bundled: Path | None) -> Path | None:
+    if value is False or value == "":
+        return None
+    if value is None:
+        return bundled
     return Path(str(value)).expanduser().resolve()
 
 
@@ -69,6 +81,16 @@ def load_config() -> UserConfig:
         colors = dict(document["colors"])
         colors.update(override.get("colors", {}))
         ansi = list(override.get("ansi", document["ansi"]))
+        background_value = override.get("background")
+        bundled_background = _bundled_background(document)
+        background = _resolve_background(background_value, bundled_background)
+        background_source = (
+            "disabled"
+            if background is None
+            else "bundled"
+            if background_value is None
+            else "custom"
+        )
         themes.append(
             Theme(
                 id=theme_id,
@@ -82,11 +104,16 @@ def load_config() -> UserConfig:
                         "herdr_panel_bg", document.get("herdr_panel_bg", "background")
                     )
                 ),
-                background=_resolve_background(override.get("background")),
-                blend=float(override.get("blend", 0.65)),
-                image_mode=int(override.get("image_mode", 2)),
+                background=background,
+                blend=float(override.get("blend", document.get("blend", 0.65))),
+                image_mode=int(
+                    override.get("image_mode", document.get("image_mode", 2))
+                ),
                 enabled=bool(override.get("enabled", True)),
-                extra={"source": document},
+                extra={
+                    "source": document,
+                    "background_source": background_source,
+                },
             )
         )
 
@@ -103,14 +130,19 @@ def load_config() -> UserConfig:
     )
 
 
-def update_theme_background(theme_id: str, background: Path | None) -> None:
+def update_theme_background(theme_id: str, background: Path | bool | None) -> None:
     write_default_config()
     raw = read_json(CONFIG_FILE, DEFAULT_CONFIG)
     themes = raw.setdefault("themes", {})
     if theme_id not in builtin_theme_documents():
         raise KeyError(theme_id)
     item = themes.setdefault(theme_id, {})
-    item["background"] = str(background.expanduser().resolve()) if background else None
+    if background is False:
+        item["background"] = False
+    elif background is None:
+        item.pop("background", None)
+    else:
+        item["background"] = str(background.expanduser().resolve())
     atomic_write_json(CONFIG_FILE, raw)
 
 

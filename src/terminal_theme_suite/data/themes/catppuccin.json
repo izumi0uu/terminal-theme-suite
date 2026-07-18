@@ -3,6 +3,9 @@
   "order": 20,
   "name": "Catppuccin Mocha",
   "description": "Soft lavender and blue accents on Mocha",
+  "wallpaper": "catppuccin.png",
+  "blend": 0.65,
+  "image_mode": 2,
   "herdr_theme": "catppuccin",
   "ansi": [
     "#45475a", "#f38ba8", "#a6e3a1", "#f9e2af",

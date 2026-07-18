@@ -3,6 +3,9 @@
   "order": 40,
   "name": "Dracula",
   "description": "High-contrast purple and pink on charcoal",
+  "wallpaper": "dracula.png",
+  "blend": 0.65,
+  "image_mode": 2,
   "herdr_theme": "dracula",
   "ansi": [
     "#21222c", "#ff5555", "#50fa7b", "#f1fa8c",

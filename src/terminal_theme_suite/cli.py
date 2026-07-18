@@ -34,7 +34,10 @@ from .service import adjacent_theme, apply, current_theme_id, sync
 def _theme_rows(themes: Iterable[Theme], current: str) -> Iterable[str]:
     for theme in themes:
         marker = "*" if theme.id == current else " "
-        background = theme.background.name if theme.background else "none"
+        source = theme.extra.get("background_source", "custom")
+        background = (
+            f"{theme.background.name} ({source})" if theme.background else source
+        )
         yield (
             f"{marker} {theme.id:<14} {theme.name:<20} "
             f"iTerm/OMP/Herdr={theme.herdr_theme:<18} background={background}"
@@ -239,9 +242,7 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("sync", help="Regenerate iTerm2 profiles without switching")
     subparsers.add_parser("doctor", help="Check integrations and local configuration")
 
-    background = subparsers.add_parser(
-        "background", help="Set or clear a private local wallpaper"
-    )
+    background = subparsers.add_parser("background", help="Manage theme wallpapers")
     background_sub = background.add_subparsers(dest="background_command", required=True)
     background_set = background_sub.add_parser("set", help="Set a theme wallpaper")
     background_set.add_argument("theme")
@@ -252,9 +253,13 @@ def build_parser() -> argparse.ArgumentParser:
         help="Reference the original file instead of copying it",
     )
     background_clear = background_sub.add_parser(
-        "clear", help="Clear a theme wallpaper"
+        "clear", help="Disable a theme wallpaper"
     )
     background_clear.add_argument("theme")
+    background_reset = background_sub.add_parser(
+        "reset", help="Restore the bundled theme wallpaper"
+    )
+    background_reset.add_argument("theme")
     return parser
 
 
@@ -304,6 +309,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                                 "background": str(theme.background)
                                 if theme.background
                                 else None,
+                                "background_source": theme.extra.get(
+                                    "background_source"
+                                ),
                                 "current": theme.id == current,
                             }
                             for theme in config.themes
@@ -352,9 +360,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                 destination = _copy_background(theme.id, args.path, args.reference)
                 update_theme_background(theme.id, destination)
                 print(f"{theme.id} background -> {destination}")
+            elif args.background_command == "clear":
+                update_theme_background(theme.id, False)
+                print(f"{theme.id} background disabled")
             else:
                 update_theme_background(theme.id, None)
-                print(f"{theme.id} background cleared")
+                print(f"{theme.id} background reset to bundled preset")
             print(sync())
             return 0
     except (KeyError, ValueError, FileNotFoundError, RuntimeError) as error:

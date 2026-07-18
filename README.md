@@ -9,7 +9,8 @@ while OMP, Herdr, Vim, or another full-screen terminal program has focus.
 ## Features
 
 - Coordinated semantic palettes for iTerm2, OMP, and Herdr
-- Private local wallpapers that are never added to this repository
+- Four original bundled wallpapers that work immediately after installation
+- Private custom wallpaper overrides that are never added to this repository
 - iTerm2 Dynamic Profiles that inherit your font, shell, and window settings
 - `Control+Option+T` for next theme
 - `Control+Option+Shift+T` for previous theme
@@ -24,6 +25,10 @@ Built-in suites:
 - Catppuccin Mocha
 - Tokyo Night
 - Dracula
+
+| Hero Amber | Catppuccin Mocha | Tokyo Night | Dracula |
+| --- | --- | --- | --- |
+| ![Hero Amber wallpaper](src/terminal_theme_suite/data/backgrounds/hero-amber.png) | ![Catppuccin wallpaper](src/terminal_theme_suite/data/backgrounds/catppuccin.png) | ![Tokyo Night wallpaper](src/terminal_theme_suite/data/backgrounds/tokyo-night.png) | ![Dracula wallpaper](src/terminal_theme_suite/data/backgrounds/dracula.png) |
 
 ## Requirements
 
@@ -71,12 +76,13 @@ or lists themes when output is redirected.
 
 ### Wallpapers
 
-Wallpapers are copied into the private user configuration directory by default:
+Every built-in suite includes a matching 1920x1200 wallpaper. No wallpaper setup is
+required after installation. Custom images are copied into the private user
+configuration directory by default and override only the selected suite:
 
 ```bash
 term-theme background set hero-amber ~/Pictures/amber-terminal.png
 term-theme background set tokyo-night ~/Pictures/tokyo-terminal.png
-term-theme background clear dracula
 ```
 
 Use `--reference` to keep the image in its original location:
@@ -87,6 +93,13 @@ term-theme background set catppuccin ~/Pictures/catppuccin.png --reference
 
 Supported formats are PNG, JPEG, HEIC, and WebP. iTerm2 renders the image; this
 project does not upload, modify, or inspect it.
+
+Disable a wallpaper or restore its bundled preset:
+
+```bash
+term-theme background clear dracula  # disable the image
+term-theme background reset dracula  # restore dracula.png
+```
 
 ## How It Works
 
@@ -142,6 +155,7 @@ Example override:
       "enabled": true
     },
     "dracula": {
+      "background": false,
       "enabled": false
     }
   }
@@ -159,7 +173,10 @@ term-theme sync
 
 ## Privacy and Safety
 
-- Wallpapers and local paths stay under your home directory and are ignored by Git.
+- Bundled wallpapers are original project assets distributed under this repository's
+  license. Their editable SVG sources live in `artwork/wallpapers`.
+- Custom wallpapers and local paths stay under your home directory and are ignored
+  by Git.
 - The project does not use network APIs at runtime.
 - Existing iTerm2 profiles are not rewritten.
 - Herdr config changes are validated and rolled back when validation fails.
@@ -176,6 +193,8 @@ term-theme use hero-amber        # 指定套装
 term-theme next                  # 下一套
 term-theme previous              # 上一套
 term-theme background set hero-amber ~/Pictures/background.png
+term-theme background clear hero-amber  # 关闭该套背景图
+term-theme background reset hero-amber  # 恢复项目内置背景图
 ```
 
 iTerm2 内快捷键：
