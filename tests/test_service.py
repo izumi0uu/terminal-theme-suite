@@ -28,9 +28,7 @@ class ServiceTests(unittest.TestCase):
             with (
                 patch.object(service, "load_config", return_value=config),
                 patch.object(service, "ITERM_PROFILE_FILE", profile_file),
-                patch.object(
-                    service, "SWITCH_LOCK", Path(temporary) / "switch.lock"
-                ),
+                patch.object(service, "SWITCH_LOCK", Path(temporary) / "switch.lock"),
                 patch.object(service, "_backup_once", return_value=[]),
                 patch.object(service.iterm2, "sync_profiles") as sync_profiles,
                 patch.object(

@@ -28,9 +28,7 @@ class IntegrationTests(unittest.TestCase):
         self.assertNotIn("toolText", colors)
 
     def test_omp_switch_hot_path_does_not_spawn_omp(self):
-        theme = next(
-            theme for theme in self.config.themes if theme.id == "hero-amber"
-        )
+        theme = next(theme for theme in self.config.themes if theme.id == "hero-amber")
         with tempfile.TemporaryDirectory() as temporary:
             target = Path(temporary) / "terminal-theme-suite.json"
             with (
