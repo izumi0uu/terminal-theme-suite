@@ -108,8 +108,7 @@ def live_reload_status(executable: Optional[str] = None) -> Tuple[bool, str]:
     if not executable:
         return False, "OMP is not installed"
     registered = any(
-        _same_path(item, OMP_LIVE_RELOAD_EXTENSION)
-        for item in _extensions(executable)
+        _same_path(item, OMP_LIVE_RELOAD_EXTENSION) for item in _extensions(executable)
     )
     installed = OMP_LIVE_RELOAD_EXTENSION.is_file() and registered
     return installed, str(OMP_LIVE_RELOAD_EXTENSION)

@@ -57,7 +57,7 @@ class IntegrationTests(unittest.TestCase):
     def test_omp_extension_enables_theme_watcher_on_session_start(self):
         source = omp._extension_source()
         self.assertIn('pi.on("session_start"', source)
-        self.assertIn('ctx.ui.setTheme(THEME_NAME)', source)
+        self.assertIn("ctx.ui.setTheme(THEME_NAME)", source)
         self.assertIn('const THEME_NAME = "terminal-theme-suite"', source)
 
     def test_omp_extension_install_preserves_existing_extensions(self):
@@ -78,10 +78,10 @@ class IntegrationTests(unittest.TestCase):
 
         self.assertTrue(added)
         arguments = run.call_args_list[1].args
-        self.assertEqual(arguments[:4], ("/usr/local/bin/omp", "config", "set", "extensions"))
         self.assertEqual(
-            json.loads(arguments[4]), ["/tmp/existing.ts", str(target)]
+            arguments[:4], ("/usr/local/bin/omp", "config", "set", "extensions")
         )
+        self.assertEqual(json.loads(arguments[4]), ["/tmp/existing.ts", str(target)])
 
     def test_omp_extension_remove_preserves_other_extensions(self):
         with tempfile.TemporaryDirectory() as temporary:

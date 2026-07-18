@@ -373,7 +373,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                 return 0
             if args.action == "remove":
                 removed = omp.remove_live_reload_extension()
-                print("OMP live reload removed" if removed else "OMP live reload not installed")
+                print(
+                    "OMP live reload removed"
+                    if removed
+                    else "OMP live reload not installed"
+                )
                 return 0
             ready, detail = omp.live_reload_status()
             print(f"{'ready' if ready else 'not ready'}\t{detail}")
