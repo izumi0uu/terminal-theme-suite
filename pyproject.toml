@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "terminal-theme-suite"
-version = "0.2.0"
+version = "0.3.0"
 description = "Switch iTerm2, Oh My Pi, Herdr, and terminal wallpapers as one theme suite"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -34,7 +34,13 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 terminal_theme_suite = [
-  "data/themes/*.json",
-  "data/backgrounds/*.png",
+  "data/presets/*/*.json",
+  "data/presets/*/*.png",
+  "data/presets/*/*.jpg",
+  "data/presets/*/*.jpeg",
+  "data/presets/*/*.webp",
+  "data/presets/*/*.heic",
+  "data/presets/*/LICENSE.txt",
+  "data/schemas/*.json",
   "data/omp/*.ts",
 ]

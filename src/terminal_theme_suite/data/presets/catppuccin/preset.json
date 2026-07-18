@@ -1,12 +1,15 @@
 {
+  "schema_version": 1,
   "id": "catppuccin",
   "order": 20,
   "name": "Catppuccin Mocha",
   "description": "Soft lavender and blue accents on Mocha",
-  "wallpaper": "catppuccin.png",
-  "blend": 0.65,
-  "image_mode": 2,
-  "herdr_theme": "catppuccin",
+  "license": "MIT",
+  "wallpaper": {
+    "file": "wallpaper.png",
+    "blend": 0.65,
+    "image_mode": 2
+  },
   "ansi": [
     "#45475a", "#f38ba8", "#a6e3a1", "#f9e2af",
     "#89b4fa", "#f5c2e7", "#94e2d5", "#a6adc8",
@@ -32,5 +35,11 @@
     "orange": "#fab387",
     "pink": "#f5c2e7",
     "selection": "#45475a"
+  },
+  "targets": {
+    "herdr": {
+      "base_theme": "catppuccin",
+      "panel_background": "background"
+    }
   }
 }

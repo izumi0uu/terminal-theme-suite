@@ -33,7 +33,11 @@ class ItermProfileTests(unittest.TestCase):
         )
         self.assertNotIn(iterm2.NEW_TAB_SHORTCUT, hero["Keyboard Map"])
         self.assertNotIn(iterm2.NEW_WINDOW_SHORTCUT, hero["Keyboard Map"])
-        self.assertTrue(hero["Background Image Location"].endswith("hero-amber.png"))
+        self.assertTrue(
+            hero["Background Image Location"].endswith(
+                "presets/hero-amber/wallpaper.png"
+            )
+        )
         self.assertEqual(hero["Background Image Mode"], 2)
         self.assertTrue(
             all(profile["Name"].startswith("TTS - ") for profile in profiles)

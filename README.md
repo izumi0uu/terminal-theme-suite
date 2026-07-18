@@ -9,7 +9,7 @@ while OMP, Herdr, Vim, or another full-screen terminal program has focus.
 ## Features
 
 - Coordinated semantic palettes for iTerm2, OMP, and Herdr
-- Four original bundled wallpapers that work immediately after installation
+- Four curated self-contained presets with bundled wallpapers
 - Private custom wallpaper overrides that are never added to this repository
 - iTerm2 Dynamic Profiles that inherit your font, shell, and window settings
 - `Control+Option+T` for next theme
@@ -29,7 +29,7 @@ Built-in suites:
 
 | Hero Amber | Catppuccin Mocha | Tokyo Night | Dracula |
 | --- | --- | --- | --- |
-| ![Hero Amber wallpaper](src/terminal_theme_suite/data/backgrounds/hero-amber.png) | ![Catppuccin wallpaper](src/terminal_theme_suite/data/backgrounds/catppuccin.png) | ![Tokyo Night wallpaper](src/terminal_theme_suite/data/backgrounds/tokyo-night.png) | ![Dracula wallpaper](src/terminal_theme_suite/data/backgrounds/dracula.png) |
+| ![Hero Amber wallpaper](src/terminal_theme_suite/data/presets/hero-amber/wallpaper.png) | ![Catppuccin wallpaper](src/terminal_theme_suite/data/presets/catppuccin/wallpaper.png) | ![Tokyo Night wallpaper](src/terminal_theme_suite/data/presets/tokyo-night/wallpaper.png) | ![Dracula wallpaper](src/terminal_theme_suite/data/presets/dracula/wallpaper.png) |
 
 ## Requirements
 
@@ -80,7 +80,7 @@ or lists themes when output is redirected.
 
 ### Wallpapers
 
-Every built-in suite includes a matching 1920x1200 wallpaper. No wallpaper setup is
+Every built-in suite includes a matching 1586x992 wallpaper. No wallpaper setup is
 required after installation. Custom images are copied into the private user
 configuration directory by default and override only the selected suite:
 
@@ -102,7 +102,7 @@ Disable a wallpaper or restore its bundled preset:
 
 ```bash
 term-theme background clear dracula  # disable the image
-term-theme background reset dracula  # restore dracula.png
+term-theme background reset dracula  # restore the bundled wallpaper
 ```
 
 ## How It Works
@@ -192,10 +192,33 @@ Regenerate profiles after manual changes:
 term-theme sync
 ```
 
+## Preset Format
+
+Each built-in suite is a self-contained directory under
+`src/terminal_theme_suite/data/presets/<id>/`:
+
+```text
+hero-amber/
+├── preset.json
+└── wallpaper.png
+```
+
+`preset.json` is the authority for the semantic palette, 16 ANSI colors, wallpaper
+settings, and target-specific overrides. Wallpaper paths are relative to the preset
+directory. The loader discovers directories automatically, so adding a preset does
+not require changing Python code. IDs must be unique and match their directory names.
+Optional `preview` and `license_file` fields can reference files in the same directory
+without changing the loader or package layout.
+
+The versioned schema lives at
+`src/terminal_theme_suite/data/schemas/preset.schema.json`. Runtime loading validates
+the same core invariants, including required semantic colors, image existence, safe
+relative filenames, and Herdr/OMP target structure. CI validates every bundled preset
+against the JSON Schema.
+
 ## Privacy and Safety
 
-- Bundled wallpapers are original project assets distributed under this repository's
-  license. Their editable SVG sources live in `artwork/wallpapers`.
+- Bundled preset wallpapers are distributed under this repository's license.
 - Custom wallpapers and local paths stay under your home directory and are ignored
   by Git.
 - The project does not use network APIs at runtime.

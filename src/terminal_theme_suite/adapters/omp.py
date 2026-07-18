@@ -369,7 +369,8 @@ def build_theme(theme: Theme) -> Dict[str, Any]:
         "statusLineSubagents": color["orange"],
         "pythonMode": color["yellow"],
     }
-    colors.update(theme.extra.get("source", {}).get("omp_colors", {}))
+    source = theme.extra.get("source", {})
+    colors.update(source.get("targets", {}).get("omp", {}).get("colors", {}))
     return {
         "$schema": OMP_THEME_SCHEMA,
         "name": "terminal-theme-suite",

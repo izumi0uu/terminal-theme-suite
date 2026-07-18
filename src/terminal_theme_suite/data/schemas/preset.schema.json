@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/izumi0uu/terminal-theme-suite/schemas/preset.schema.json",
+  "title": "Terminal Theme Suite preset",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "order",
+    "name",
+    "description",
+    "wallpaper",
+    "ansi",
+    "colors",
+    "targets"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "order": {
+      "type": "integer"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "license": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "author": {
+      "type": "string",
+      "minLength": 1
+    },
+    "preview": {
+      "type": "string",
+      "pattern": "^[^/\\\\]+\\.(?:png|jpg|jpeg|webp|heic)$"
+    },
+    "license_file": {
+      "type": "string",
+      "pattern": "^[^/\\\\]+\\.txt$"
+    },
+    "wallpaper": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["file", "blend", "image_mode"],
+      "properties": {
+        "file": {
+          "type": "string",
+          "pattern": "^[^/\\\\]+\\.(?:png|jpg|jpeg|webp|heic)$"
+        },
+        "blend": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "image_mode": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "ansi": {
+      "type": "array",
+      "minItems": 16,
+      "maxItems": 16,
+      "items": {
+        "$ref": "#/$defs/color"
+      }
+    },
+    "colors": {
+      "type": "object",
+      "required": [
+        "background",
+        "background_alt",
+        "surface",
+        "surface_alt",
+        "foreground",
+        "muted",
+        "dim",
+        "accent",
+        "accent_alt",
+        "red",
+        "green",
+        "yellow",
+        "blue",
+        "cyan",
+        "teal",
+        "orange",
+        "pink",
+        "selection"
+      ],
+      "additionalProperties": {
+        "$ref": "#/$defs/color"
+      }
+    },
+    "targets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["herdr"],
+      "properties": {
+        "herdr": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["base_theme", "panel_background"],
+          "properties": {
+            "base_theme": {
+              "type": "string",
+              "minLength": 1
+            },
+            "panel_background": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "omp": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["colors"],
+          "properties": {
+            "colors": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/$defs/color"
+              }
+            }
+          }
+        },
+        "iterm2": {
+          "type": "object"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "color": {
+      "type": "string",
+      "pattern": "^#[0-9a-fA-F]{6}$"
+    }
+  }
+}

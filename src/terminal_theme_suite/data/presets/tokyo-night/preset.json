@@ -1,12 +1,15 @@
 {
+  "schema_version": 1,
   "id": "tokyo-night",
   "order": 30,
   "name": "Tokyo Night",
   "description": "Cool blue night palette with violet accents",
-  "wallpaper": "tokyo-night.png",
-  "blend": 0.65,
-  "image_mode": 2,
-  "herdr_theme": "tokyo-night",
+  "license": "MIT",
+  "wallpaper": {
+    "file": "wallpaper.png",
+    "blend": 0.65,
+    "image_mode": 2
+  },
   "ansi": [
     "#15161e", "#f7768e", "#9ece6a", "#e0af68",
     "#7aa2f7", "#bb9af7", "#7dcfff", "#a9b1d6",
@@ -32,5 +35,11 @@
     "orange": "#ff9e64",
     "pink": "#bb9af7",
     "selection": "#2a2f41"
+  },
+  "targets": {
+    "herdr": {
+      "base_theme": "tokyo-night",
+      "panel_background": "background"
+    }
   }
 }
