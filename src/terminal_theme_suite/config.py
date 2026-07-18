@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from functools import lru_cache
 from importlib import resources
 from pathlib import Path
 from typing import Any, Dict, Iterable, List
@@ -33,6 +34,7 @@ def _theme_resource_paths() -> Iterable[Any]:
     )
 
 
+@lru_cache(maxsize=1)
 def builtin_theme_documents() -> Dict[str, Dict[str, Any]]:
     loaded: List[Dict[str, Any]] = []
     for path in _theme_resource_paths():

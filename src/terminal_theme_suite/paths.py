@@ -13,6 +13,7 @@ HOME = Path.home()
 CONFIG_DIR = _env_path("TTS_CONFIG_DIR", HOME / ".config" / "terminal-theme-suite")
 CONFIG_FILE = CONFIG_DIR / "config.json"
 STATE_FILE = CONFIG_DIR / "state.json"
+SWITCH_LOCK = CONFIG_DIR / "switch.lock"
 BACKGROUND_DIR = CONFIG_DIR / "backgrounds"
 BACKUP_DIR = CONFIG_DIR / "backups"
 

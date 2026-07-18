@@ -27,6 +27,24 @@ class IntegrationTests(unittest.TestCase):
         self.assertNotIn("link", colors)
         self.assertNotIn("toolText", colors)
 
+    def test_omp_switch_hot_path_does_not_spawn_omp(self):
+        theme = next(
+            theme for theme in self.config.themes if theme.id == "hero-amber"
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            target = Path(temporary) / "terminal-theme-suite.json"
+            with (
+                patch.object(omp, "OMP_ACTIVE_THEME", target),
+                patch.object(omp, "_run") as run,
+            ):
+                message, warning = omp.apply_theme(theme)
+
+            self.assertTrue(target.is_file())
+
+        run.assert_not_called()
+        self.assertIn("live reload", message)
+        self.assertIsNone(warning)
+
     def test_herdr_update_preserves_unrelated_sections(self):
         hero = next(theme for theme in self.config.themes if theme.id == "hero-amber")
         with tempfile.TemporaryDirectory() as temporary:

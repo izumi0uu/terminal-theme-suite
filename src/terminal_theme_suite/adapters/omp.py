@@ -114,6 +114,28 @@ def live_reload_status(executable: Optional[str] = None) -> Tuple[bool, str]:
     return installed, str(OMP_LIVE_RELOAD_EXTENSION)
 
 
+def configuration_status(executable: Optional[str] = None) -> Tuple[bool, str]:
+    executable = executable or shutil.which("omp")
+    if not executable:
+        return False, "OMP is not installed"
+    reload_ready, detail = live_reload_status(executable)
+    expected = {
+        "theme.dark": "terminal-theme-suite",
+        "theme.light": "terminal-theme-suite",
+        "symbolPreset": "nerd",
+    }
+    drift = [
+        key
+        for key, value in expected.items()
+        if _run(executable, "config", "get", key).stdout.strip() != value
+    ]
+    if not reload_ready:
+        drift.append("extensions")
+    if drift:
+        return False, f"run term-theme repair ({', '.join(drift)})"
+    return True, detail
+
+
 def build_theme(theme: Theme) -> Dict[str, Any]:
     color = theme.colors
     colors = {
@@ -197,9 +219,13 @@ def build_theme(theme: Theme) -> Dict[str, Any]:
     }
 
 
-def apply_theme(theme: Theme) -> Tuple[str, str | None]:
+def _write_theme(theme: Theme) -> None:
     document = build_theme(theme)
     atomic_write_text(OMP_ACTIVE_THEME, json.dumps(document, indent=2) + "\n")
+
+
+def configure_theme(theme: Theme) -> Tuple[str, str | None]:
+    _write_theme(theme)
     executable = shutil.which("omp")
     if not executable:
         return "OMP theme file updated", "omp is not installed; skipped config update"
@@ -222,4 +248,9 @@ def apply_theme(theme: Theme) -> Tuple[str, str | None]:
         if extension_added
         else None
     )
-    return "OMP -> terminal-theme-suite (dark/light, Nerd Font)", warning
+    return "OMP configured -> terminal-theme-suite (dark/light, Nerd Font)", warning
+
+
+def apply_theme(theme: Theme) -> Tuple[str, str | None]:
+    _write_theme(theme)
+    return "OMP theme file updated (live reload)", None

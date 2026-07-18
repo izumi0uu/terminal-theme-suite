@@ -29,7 +29,14 @@ from .paths import (
     OMP_ACTIVE_THEME,
     OMP_LIVE_RELOAD_EXTENSION,
 )
-from .service import adjacent_theme, apply, current_theme_id, sync
+from .service import (
+    SwitchResult,
+    apply,
+    apply_adjacent,
+    configure_omp,
+    current_theme_id,
+    sync,
+)
 
 
 def _theme_rows(themes: Iterable[Theme], current: str) -> Iterable[str]:
@@ -45,15 +52,34 @@ def _theme_rows(themes: Iterable[Theme], current: str) -> Iterable[str]:
         )
 
 
-def _print_result(result: object, quiet: bool) -> None:
+def _print_result(result: SwitchResult, quiet: bool, timing: bool = False) -> None:
     if quiet:
         return
-    switch_result = result
-    print(f"Switched to {switch_result.theme.name} ({switch_result.theme.id})")
-    for message in switch_result.messages:
+    print(f"Switched to {result.theme.name} ({result.theme.id})")
+    for message in result.messages:
         print(f"  ok: {message}")
-    for warning in switch_result.warnings:
+    for warning in result.warnings:
         print(f"  note: {warning}")
+    if timing:
+        print("Timing:", file=sys.stderr)
+        order = (
+            "lock_wait",
+            "config",
+            "backup",
+            "profiles",
+            "iterm2",
+            "omp",
+            "herdr",
+            "integrations",
+            "state",
+            "total",
+        )
+        for name in order:
+            if name in result.timings:
+                print(
+                    f"  {name:<14} {result.timings[name]:8.1f} ms",
+                    file=sys.stderr,
+                )
 
 
 def _choose_theme() -> Optional[str]:
@@ -126,7 +152,9 @@ def _doctor() -> int:
     daemon_live = iterm2.daemon_ready() if iterm_running else True
     omp_installed = bool(shutil.which("omp"))
     omp_reload_ready, omp_reload_detail = (
-        omp.live_reload_status() if omp_installed else (True, "optional, OMP not found")
+        omp.configuration_status()
+        if omp_installed
+        else (True, "optional, OMP not found")
     )
     checks = [
         ("macOS", platform.system() == "Darwin", platform.platform()),
@@ -205,6 +233,9 @@ def _add_switch_options(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "--dry-run", action="store_true", help="Show the target without changing files"
     )
+    parser.add_argument(
+        "--timing", action="store_true", help="Print per-stage switch timings"
+    )
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -247,6 +278,7 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("choose", help="Choose a theme suite with fzf")
     subparsers.add_parser("sync", help="Regenerate iTerm2 profiles without switching")
     subparsers.add_parser("doctor", help="Check integrations and local configuration")
+    subparsers.add_parser("repair", help="Repair the managed OMP integration")
 
     background = subparsers.add_parser("background", help="Manage theme wallpapers")
     background_sub = background.add_subparsers(dest="background_command", required=True)
@@ -302,6 +334,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                 "iTerm2 API enabled: restart once, then approve its Python Runtime "
                 "download if prompted"
             )
+            omp_message, omp_warning = configure_omp()
+            print(f"OMP: {omp_message}")
+            if omp_warning:
+                print(f"OMP note: {omp_warning}")
             if args.apply:
                 _print_result(apply(current_theme_id()), quiet=False)
             return 0
@@ -335,13 +371,18 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             return 0
 
         if command == "use":
-            _print_result(apply(args.theme, dry_run=args.dry_run), args.quiet)
+            _print_result(
+                apply(args.theme, dry_run=args.dry_run), args.quiet, args.timing
+            )
             return 0
 
         if command in {"next", "previous"}:
             direction = 1 if command == "next" else -1
-            target = adjacent_theme(direction)
-            _print_result(apply(target.id, dry_run=args.dry_run), args.quiet)
+            _print_result(
+                apply_adjacent(direction, dry_run=args.dry_run),
+                args.quiet,
+                args.timing,
+            )
             return 0
 
         if command == "current":
@@ -364,12 +405,20 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         if command == "doctor":
             return _doctor()
 
+        if command == "repair":
+            message, warning = configure_omp()
+            print(message)
+            if warning:
+                print(f"note: {warning}")
+            return 0
+
         if command == "omp-live-reload":
             if args.action == "install":
-                added = omp.install_live_reload_extension()
+                message, warning = configure_omp()
+                print(message)
                 print(f"OMP live reload -> {OMP_LIVE_RELOAD_EXTENSION}")
-                if added:
-                    print("Restart currently running OMP processes once")
+                if warning:
+                    print(f"note: {warning}")
                 return 0
             if args.action == "remove":
                 removed = omp.remove_live_reload_extension()

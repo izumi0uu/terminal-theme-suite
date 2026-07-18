@@ -18,6 +18,7 @@ while OMP, Herdr, Vim, or another full-screen terminal program has focus.
 - Interactive `fzf` picker and scriptable commands
 - Atomic configuration writes and Herdr validation before live reload
 - An OMP startup extension that enables live reload in every new OMP process
+- Parallel iTerm2, OMP, and Herdr updates with an inter-process switch lock
 
 Built-in suites:
 
@@ -49,6 +50,8 @@ cd terminal-theme-suite
 The installer creates an isolated virtual environment under
 `~/.local/share/terminal-theme-suite` and links `term-theme` into `~/.local/bin`.
 It also installs a small AutoLaunch daemon in iTerm2's standard Scripts directory.
+During initialization it configures OMP's dark theme, light theme, Nerd Font symbol
+preset, and live-reload extension once; normal theme switches do not run `omp config`.
 Restart iTerm2 once after the first installation. iTerm2 may then ask to download its
 official Python Runtime (about 169 MB); approve that one-time prompt. The Runtime is
 maintained and verified by iTerm2, not this project. The daemon uses the API only to
@@ -69,6 +72,7 @@ term-theme use hero-amber
 term-theme next
 term-theme previous
 term-theme current
+term-theme use tokyo-night --timing
 ```
 
 Running `term-theme` without arguments opens the picker in an interactive terminal,
@@ -126,11 +130,17 @@ repeated API authorization and connection setup. Coprocess output never becomes 
 inside OMP or Herdr.
 
 OMP is configured to use `terminal-theme-suite` for both dark and light modes and
-to use Nerd Font symbols. The first theme switch installs a small OMP extension that
-selects the managed theme through OMP's in-process API at startup. This enables OMP's
+to use Nerd Font symbols during `term-theme init`. A small OMP extension selects the
+managed theme through OMP's in-process API at startup. This enables OMP's
 theme watcher, so later switches repaint every OMP process that loaded the extension.
 Processes that were already running when the extension was first installed need one
 restart; restarting is not required after later theme switches.
+
+The switch hot path only atomically replaces the managed OMP theme JSON; it does not
+start the OMP CLI. iTerm2, OMP, and Herdr updates run concurrently after the target
+theme is resolved. A file lock serializes overlapping shortcut presses, including
+calculating `next` and `previous`, so overlapping switches cannot interleave. Run
+`term-theme repair` if `term-theme doctor` reports OMP configuration drift.
 
 Herdr's existing TOML configuration is preserved. Only `[theme]` and
 `[theme.custom]` values are managed, followed by `herdr config check` and
@@ -196,6 +206,7 @@ term-theme                       # 使用 fzf 选择
 term-theme use hero-amber        # 指定套装
 term-theme next                  # 下一套
 term-theme previous              # 上一套
+term-theme use tokyo-night --timing # 显示各阶段耗时
 term-theme background set hero-amber ~/Pictures/background.png
 term-theme background clear hero-amber  # 关闭该套背景图
 term-theme background reset hero-amber  # 恢复项目内置背景图
@@ -206,7 +217,13 @@ iTerm2 内快捷键：
 - `Control+Option+T`：下一套
 - `Control+Option+Shift+T`：上一套
 
-首次切换主题后，已经运行的 OMP 需要重开一次。此后 OMP 会监听活动主题文件，切换时可自动刷新。
+安装或运行 `term-theme init` 后，之前已经运行的 OMP 需要重开一次以加载扩展。此后 OMP 会监听活动主题文件，切换时可自动刷新。
+
+普通切换只原子替换 OMP 主题 JSON，iTerm2、OMP、Herdr 会并行更新。多个快捷键命令会通过文件锁依次执行，避免多次切换彼此交错。`term-theme doctor` 如果提示 OMP 配置漂移，运行：
+
+```bash
+term-theme repair
+```
 
 如果需要单独检查或管理这个启动扩展：
 
