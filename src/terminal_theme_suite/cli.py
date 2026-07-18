@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Iterable, Optional, Sequence
 
 from . import __version__
-from .adapters import iterm2
+from .adapters import iterm2, omp
 from .config import (
     find_theme,
     load_config,
@@ -27,6 +27,7 @@ from .paths import (
     ITERM_PROFILE_FILE,
     ITERM_RUNTIME_METADATA,
     OMP_ACTIVE_THEME,
+    OMP_LIVE_RELOAD_EXTENSION,
 )
 from .service import adjacent_theme, apply, current_theme_id, sync
 
@@ -123,6 +124,10 @@ def _doctor() -> int:
     api_enabled = api_result.returncode == 0 and api_result.stdout.strip() == "1"
     iterm_running = iterm2._iterm_is_running()
     daemon_live = iterm2.daemon_ready() if iterm_running else True
+    omp_installed = bool(shutil.which("omp"))
+    omp_reload_ready, omp_reload_detail = (
+        omp.live_reload_status() if omp_installed else (True, "optional, OMP not found")
+    )
     checks = [
         ("macOS", platform.system() == "Darwin", platform.platform()),
         ("iTerm2", Path("/Applications/iTerm.app").exists(), "/Applications/iTerm.app"),
@@ -157,9 +162,10 @@ def _doctor() -> int:
         ),
         (
             "OMP",
-            bool(shutil.which("omp")),
+            omp_installed,
             shutil.which("omp") or "optional, not found",
         ),
+        ("OMP live reload", omp_reload_ready, omp_reload_detail),
         (
             "Herdr",
             bool(shutil.which("herdr")),
@@ -260,6 +266,11 @@ def build_parser() -> argparse.ArgumentParser:
         "reset", help="Restore the bundled theme wallpaper"
     )
     background_reset.add_argument("theme")
+
+    omp_reload = subparsers.add_parser(
+        "omp-live-reload", help="Manage live theme reload support for OMP"
+    )
+    omp_reload.add_argument("action", choices=("install", "remove", "status"))
     return parser
 
 
@@ -352,6 +363,21 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
         if command == "doctor":
             return _doctor()
+
+        if command == "omp-live-reload":
+            if args.action == "install":
+                added = omp.install_live_reload_extension()
+                print(f"OMP live reload -> {OMP_LIVE_RELOAD_EXTENSION}")
+                if added:
+                    print("Restart currently running OMP processes once")
+                return 0
+            if args.action == "remove":
+                removed = omp.remove_live_reload_extension()
+                print("OMP live reload removed" if removed else "OMP live reload not installed")
+                return 0
+            ready, detail = omp.live_reload_status()
+            print(f"{'ready' if ready else 'not ready'}\t{detail}")
+            return 0 if ready else 1
 
         if command == "background":
             config = load_config()

@@ -17,7 +17,7 @@ while OMP, Herdr, Vim, or another full-screen terminal program has focus.
 - New tabs and windows inherit the active suite through `Command+T` and `Command+N`
 - Interactive `fzf` picker and scriptable commands
 - Atomic configuration writes and Herdr validation before live reload
-- One fixed OMP custom-theme file, enabling live reload after the first OMP restart
+- An OMP startup extension that enables live reload in every new OMP process
 
 Built-in suites:
 
@@ -126,8 +126,11 @@ repeated API authorization and connection setup. Coprocess output never becomes 
 inside OMP or Herdr.
 
 OMP is configured to use `terminal-theme-suite` for both dark and light modes and
-to use Nerd Font symbols. Restart every already-running OMP process once after the
-initial setup. Later switches update the watched theme file and repaint live.
+to use Nerd Font symbols. The first theme switch installs a small OMP extension that
+selects the managed theme through OMP's in-process API at startup. This enables OMP's
+theme watcher, so later switches repaint every OMP process that loaded the extension.
+Processes that were already running when the extension was first installed need one
+restart; restarting is not required after later theme switches.
 
 Herdr's existing TOML configuration is preserved. Only `[theme]` and
 `[theme.custom]` values are managed, followed by `herdr config check` and
@@ -181,6 +184,7 @@ term-theme sync
 - Existing iTerm2 profiles are not rewritten.
 - Herdr config changes are validated and rolled back when validation fails.
 - OMP model, provider, and authentication settings are not modified.
+- The OMP extension only calls the local `ctx.ui.setTheme` API at session startup.
 
 ## 中文快速说明
 
@@ -202,7 +206,15 @@ iTerm2 内快捷键：
 - `Control+Option+T`：下一套
 - `Control+Option+Shift+T`：上一套
 
-首次安装后，已经运行的 OMP 需要重开一次。此后 OMP 会监听活动主题文件，切换时可自动刷新。
+首次切换主题后，已经运行的 OMP 需要重开一次。此后 OMP 会监听活动主题文件，切换时可自动刷新。
+
+如果需要单独检查或管理这个启动扩展：
+
+```bash
+term-theme omp-live-reload status
+term-theme omp-live-reload install
+term-theme omp-live-reload remove
+```
 
 ## Development
 

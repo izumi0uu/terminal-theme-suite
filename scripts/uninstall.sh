@@ -10,6 +10,9 @@ DAEMON="$ITERM_SCRIPTS_DIR/AutoLaunch/terminal_theme_suite.py"
 LEGACY_RUNNER="$ITERM_SCRIPTS_DIR/terminal_theme_suite.py"
 
 pkill -f '[/]AutoLaunch[/]terminal_theme_suite[.]py' 2>/dev/null || true
+if [ -x "$BIN_DIR/term-theme" ]; then
+  "$BIN_DIR/term-theme" omp-live-reload remove >/dev/null 2>&1 || true
+fi
 rm -f \
   "$BIN_DIR/term-theme" \
   "$BIN_DIR/terminal-theme-suite" \

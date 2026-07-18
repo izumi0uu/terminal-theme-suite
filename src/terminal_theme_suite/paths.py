@@ -40,6 +40,7 @@ ITERM_RUNTIME_METADATA = ITERM_RUNTIME_DIR / "iterm2env-metadata.json"
 OMP_DIR = _env_path("TTS_OMP_DIR", HOME / ".omp" / "agent")
 OMP_THEME_DIR = OMP_DIR / "themes"
 OMP_ACTIVE_THEME = OMP_THEME_DIR / "terminal-theme-suite.json"
+OMP_LIVE_RELOAD_EXTENSION = CONFIG_DIR / "omp-live-reload.ts"
 
 HERDR_DIR = _env_path("TTS_HERDR_DIR", HOME / ".config" / "herdr")
 HERDR_CONFIG = HERDR_DIR / "config.toml"
