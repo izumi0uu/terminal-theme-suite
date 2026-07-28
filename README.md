@@ -267,6 +267,14 @@ term-theme omp-live-reload remove
 
 ## Development
 
+Bundled preset wallpapers are stored with Git LFS. Install Git LFS with your package
+manager, then materialize the image files after cloning:
+
+```bash
+git lfs install
+git lfs pull
+```
+
 ```bash
 python3 -m venv .venv
 .venv/bin/pip install -e .
