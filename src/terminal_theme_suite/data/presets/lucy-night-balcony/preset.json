@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "lucy-night-balcony",
+  "order": 250,
+  "name": "Lucy Night Balcony",
+  "description": "Cyber-noir black with cyan and hot-coral highlights",
+  "wallpaper": {
+    "file": "wallpaper.png",
+    "blend": 0.58,
+    "image_mode": 2
+  },
+  "ansi": [
+    "#A0A0CA",
+    "#E27682",
+    "#45AA6B",
+    "#C99A24",
+    "#45E7E3",
+    "#FF6B80",
+    "#32A6BC",
+    "#F4F1F7",
+    "#B4AFD2",
+    "#E58A95",
+    "#61B581",
+    "#D0A846",
+    "#61E9E6",
+    "#FD8093",
+    "#51B2C5",
+    "#F4F1F7"
+  ],
+  "colors": {
+    "background": "#030712",
+    "background_alt": "#07141F",
+    "surface": "#161A24",
+    "surface_alt": "#252832",
+    "foreground": "#F4F1F7",
+    "muted": "#B4AFD2",
+    "dim": "#A0A0CA",
+    "accent": "#45E7E3",
+    "accent_alt": "#FF6B80",
+    "red": "#E27682",
+    "green": "#45AA6B",
+    "yellow": "#C99A24",
+    "blue": "#45E7E3",
+    "cyan": "#32A6BC",
+    "teal": "#35A899",
+    "orange": "#D5834A",
+    "pink": "#FF6B80",
+    "selection": "#123840"
+  },
+  "targets": {
+    "herdr": {
+      "base_theme": "catppuccin",
+      "panel_background": "reset"
+    },
+    "omp": {
+      "colors": {
+        "borderMuted": "#A0A0CA",
+        "mdCodeBlockBorder": "#A0A0CA",
+        "mdQuoteBorder": "#A0A0CA",
+        "mdHr": "#A0A0CA",
+        "thinkingOff": "#A0A0CA",
+        "statusLineSep": "#A0A0CA"
+      }
+    },
+    "claude": {
+      "base": "dark",
+      "overrides": {}
+    },
+    "codex": {
+      "overrides": {},
+      "styles": {
+        "comment": [
+          "italic"
+        ],
+        "keyword": [
+          "bold"
+        ],
+        "heading": [
+          "bold"
+        ],
+        "link": [
+          "underline"
+        ],
+        "invalid": [
+          "bold"
+        ]
+      }
+    },
+    "hermes": {
+      "overrides": {}
+    }
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "toga-signal-yellow",
+  "order": 240,
+  "name": "Toga Signal Yellow",
+  "description": "Signal yellow with charcoal-blue and berry accents",
+  "wallpaper": {
+    "file": "wallpaper.png",
+    "blend": 0.58,
+    "image_mode": 2
+  },
+  "ansi": [
+    "#493C15",
+    "#881D29",
+    "#205032",
+    "#594410",
+    "#193B6A",
+    "#68294F",
+    "#174D57",
+    "#17111E",
+    "#3A2F14",
+    "#761B27",
+    "#1F462F",
+    "#4E3C12",
+    "#19345E",
+    "#5B2547",
+    "#17434E",
+    "#17111E"
+  ],
+  "colors": {
+    "background": "#F5C928",
+    "background_alt": "#F7D557",
+    "surface": "#F9DC75",
+    "surface_alt": "#E3BA25",
+    "foreground": "#17111E",
+    "muted": "#3A2F14",
+    "dim": "#493C15",
+    "accent": "#193B6A",
+    "accent_alt": "#68294F",
+    "red": "#881D29",
+    "green": "#205032",
+    "yellow": "#594410",
+    "blue": "#193B6A",
+    "cyan": "#174D57",
+    "teal": "#194F48",
+    "orange": "#6B3A19",
+    "pink": "#68294F",
+    "selection": "#D2B233"
+  },
+  "targets": {
+    "herdr": {
+      "base_theme": "catppuccin-latte",
+      "panel_background": "reset"
+    },
+    "omp": {
+      "colors": {
+        "borderMuted": "#493C15",
+        "mdCodeBlockBorder": "#493C15",
+        "mdQuoteBorder": "#493C15",
+        "mdHr": "#493C15",
+        "thinkingOff": "#493C15",
+        "statusLineSep": "#493C15"
+      }
+    },
+    "claude": {
+      "base": "light",
+      "overrides": {}
+    },
+    "codex": {
+      "overrides": {},
+      "styles": {
+        "comment": [
+          "italic"
+        ],
+        "keyword": [
+          "bold"
+        ],
+        "heading": [
+          "bold"
+        ],
+        "link": [
+          "underline"
+        ],
+        "invalid": [
+          "bold"
+        ]
+      }
+    },
+    "hermes": {
+      "overrides": {}
+    }
+  }
+}

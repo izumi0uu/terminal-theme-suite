@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "whitehair-redline",
+  "order": 180,
+  "name": "Whitehair Redline",
+  "description": "Athletic red with porcelain and cool-blue highlights",
+  "wallpaper": {
+    "file": "wallpaper.png",
+    "blend": 0.5,
+    "image_mode": 2
+  },
+  "ansi": [
+    "#D7B8BB",
+    "#EA9DA6",
+    "#6DC48D",
+    "#DAAB33",
+    "#9EEAF3",
+    "#FFD67D",
+    "#5AC0D3",
+    "#F9F7FA",
+    "#E2CCD0",
+    "#ECABB3",
+    "#83CC9E",
+    "#DFB753",
+    "#ADECF4",
+    "#FEDB91",
+    "#73C9D9",
+    "#F9F7FA"
+  ],
+  "colors": {
+    "background": "#54070D",
+    "background_alt": "#58151B",
+    "surface": "#611A1F",
+    "surface_alt": "#6B282E",
+    "foreground": "#F9F7FA",
+    "muted": "#E2CCD0",
+    "dim": "#D7B8BB",
+    "accent": "#9EEAF3",
+    "accent_alt": "#FFD67D",
+    "red": "#EA9DA6",
+    "green": "#6DC48D",
+    "yellow": "#DAAB33",
+    "blue": "#9EEAF3",
+    "cyan": "#5AC0D3",
+    "teal": "#46C5B4",
+    "orange": "#E0A57C",
+    "pink": "#FFD67D",
+    "selection": "#643940"
+  },
+  "targets": {
+    "herdr": {
+      "base_theme": "catppuccin",
+      "panel_background": "reset"
+    },
+    "omp": {
+      "colors": {
+        "borderMuted": "#D7B8BB",
+        "mdCodeBlockBorder": "#D7B8BB",
+        "mdQuoteBorder": "#D7B8BB",
+        "mdHr": "#D7B8BB",
+        "thinkingOff": "#D7B8BB",
+        "statusLineSep": "#D7B8BB"
+      }
+    },
+    "claude": {
+      "base": "dark",
+      "overrides": {}
+    },
+    "codex": {
+      "overrides": {},
+      "styles": {
+        "comment": [
+          "italic"
+        ],
+        "keyword": [
+          "bold"
+        ],
+        "heading": [
+          "bold"
+        ],
+        "link": [
+          "underline"
+        ],
+        "invalid": [
+          "bold"
+        ]
+      }
+    },
+    "hermes": {
+      "overrides": {}
+    }
+  }
+}

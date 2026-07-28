@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "capsule-city",
+  "order": 50,
+  "name": "Capsule City",
+  "description": "Pastel teal and warm peach over Goku's Fuji cityscape",
+  "wallpaper": {
+    "file": "wallpaper.png",
+    "blend": 0.72,
+    "image_mode": 2
+  },
+  "ansi": [
+    "#162725",
+    "#5C131C",
+    "#153521",
+    "#3B2D0B",
+    "#0E3054",
+    "#4E1D3A",
+    "#10343B",
+    "#000000",
+    "#0B1412",
+    "#4D1018",
+    "#122D1C",
+    "#322609",
+    "#0C2847",
+    "#421831",
+    "#0D2C32",
+    "#000000"
+  ],
+  "colors": {
+    "background": "#8BB4AD",
+    "background_alt": "#A5C4BF",
+    "surface": "#B5CFCB",
+    "surface_alt": "#81A6A0",
+    "foreground": "#000000",
+    "muted": "#0B1412",
+    "dim": "#162725",
+    "accent": "#0E3054",
+    "accent_alt": "#4E1D3A",
+    "red": "#5C131C",
+    "green": "#153521",
+    "yellow": "#3B2D0B",
+    "blue": "#0E3054",
+    "cyan": "#10343B",
+    "teal": "#113530",
+    "orange": "#472711",
+    "pink": "#4E1D3A",
+    "selection": "#779F9F"
+  },
+  "targets": {
+    "herdr": {
+      "base_theme": "catppuccin-latte",
+      "panel_background": "reset"
+    },
+    "omp": {
+      "colors": {
+        "borderMuted": "#162725",
+        "mdCodeBlockBorder": "#162725",
+        "mdQuoteBorder": "#162725",
+        "mdHr": "#162725",
+        "thinkingOff": "#162725",
+        "statusLineSep": "#162725"
+      }
+    },
+    "claude": {
+      "base": "light",
+      "overrides": {}
+    },
+    "codex": {
+      "overrides": {},
+      "styles": {
+        "comment": [
+          "italic"
+        ],
+        "keyword": [
+          "bold"
+        ],
+        "heading": [
+          "bold"
+        ],
+        "link": [
+          "underline"
+        ],
+        "invalid": [
+          "bold"
+        ]
+      }
+    },
+    "hermes": {
+      "overrides": {}
+    }
+  }
+}

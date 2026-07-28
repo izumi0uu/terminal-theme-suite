@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "maid-raspberry",
+  "order": 260,
+  "name": "Maid Raspberry",
+  "description": "Deep raspberry with porcelain and ice-blue highlights",
+  "wallpaper": {
+    "file": "wallpaper.png",
+    "blend": 0.62,
+    "image_mode": 2
+  },
+  "ansi": [
+    "#D4B3C2",
+    "#E999A2",
+    "#65C187",
+    "#D9A729",
+    "#B9D7FF",
+    "#FFE0A3",
+    "#4FBCD0",
+    "#F4F2F7",
+    "#DFC7D3",
+    "#EBA7B0",
+    "#7CC999",
+    "#DDB34A",
+    "#C2DBFE",
+    "#FDE3B0",
+    "#69C5D6",
+    "#F4F2F7"
+  ],
+  "colors": {
+    "background": "#500020",
+    "background_alt": "#560D2D",
+    "surface": "#5D1331",
+    "surface_alt": "#68223E",
+    "foreground": "#F4F2F7",
+    "muted": "#DFC7D3",
+    "dim": "#D4B3C2",
+    "accent": "#B9D7FF",
+    "accent_alt": "#FFE0A3",
+    "red": "#E999A2",
+    "green": "#65C187",
+    "yellow": "#D9A729",
+    "blue": "#B9D7FF",
+    "cyan": "#4FBCD0",
+    "teal": "#3DC1AF",
+    "orange": "#DFA177",
+    "pink": "#FFE0A3",
+    "selection": "#672F51"
+  },
+  "targets": {
+    "herdr": {
+      "base_theme": "catppuccin",
+      "panel_background": "reset"
+    },
+    "omp": {
+      "colors": {
+        "borderMuted": "#D4B3C2",
+        "mdCodeBlockBorder": "#D4B3C2",
+        "mdQuoteBorder": "#D4B3C2",
+        "mdHr": "#D4B3C2",
+        "thinkingOff": "#D4B3C2",
+        "statusLineSep": "#D4B3C2"
+      }
+    },
+    "claude": {
+      "base": "dark",
+      "overrides": {}
+    },
+    "codex": {
+      "overrides": {},
+      "styles": {
+        "comment": [
+          "italic"
+        ],
+        "keyword": [
+          "bold"
+        ],
+        "heading": [
+          "bold"
+        ],
+        "link": [
+          "underline"
+        ],
+        "invalid": [
+          "bold"
+        ]
+      }
+    },
+    "hermes": {
+      "overrides": {}
+    }
+  }
+}

@@ -102,4 +102,4 @@ async def main(connection):
     await iterm2.async_wait_forever()
 
 
-iterm2.run_forever(main)
+iterm2.run_forever(main, retry=True)

@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "blonde-peek-gold",
+  "order": 300,
+  "name": "Blonde Peek Gold",
+  "description": "Flat gold with charcoal, navy and plum terminal accents",
+  "wallpaper": {
+    "file": "wallpaper.png",
+    "blend": 0.65,
+    "image_mode": 2
+  },
+  "ansi": [
+    "#443309",
+    "#7A1A25",
+    "#1D472D",
+    "#4F3D0E",
+    "#153F73",
+    "#642A55",
+    "#15444E",
+    "#17111E",
+    "#33270B",
+    "#6A1924",
+    "#1C3E2B",
+    "#463611",
+    "#153865",
+    "#58264C",
+    "#153C46",
+    "#17111E"
+  ],
+  "colors": {
+    "background": "#F4B900",
+    "background_alt": "#F6C838",
+    "surface": "#F8D25C",
+    "surface_alt": "#E2AB00",
+    "foreground": "#17111E",
+    "muted": "#33270B",
+    "dim": "#443309",
+    "accent": "#153F73",
+    "accent_alt": "#642A55",
+    "red": "#7A1A25",
+    "green": "#1D472D",
+    "yellow": "#4F3D0E",
+    "blue": "#153F73",
+    "cyan": "#15444E",
+    "teal": "#164740",
+    "orange": "#5F3416",
+    "pink": "#642A55",
+    "selection": "#D0A512"
+  },
+  "targets": {
+    "herdr": {
+      "base_theme": "catppuccin-latte",
+      "panel_background": "reset"
+    },
+    "omp": {
+      "colors": {
+        "borderMuted": "#443309",
+        "mdCodeBlockBorder": "#443309",
+        "mdQuoteBorder": "#443309",
+        "mdHr": "#443309",
+        "thinkingOff": "#443309",
+        "statusLineSep": "#443309"
+      }
+    },
+    "claude": {
+      "base": "light",
+      "overrides": {}
+    },
+    "codex": {
+      "overrides": {},
+      "styles": {
+        "comment": [
+          "italic"
+        ],
+        "keyword": [
+          "bold"
+        ],
+        "heading": [
+          "bold"
+        ],
+        "link": [
+          "underline"
+        ],
+        "invalid": [
+          "bold"
+        ]
+      }
+    },
+    "hermes": {
+      "overrides": {}
+    }
+  }
+}

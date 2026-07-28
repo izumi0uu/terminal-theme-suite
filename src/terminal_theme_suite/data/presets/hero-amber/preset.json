@@ -69,6 +69,23 @@
         "statusLineCost": "#3f2e00",
         "statusLineSubagents": "#452845"
       }
+    },
+    "claude": {
+      "base": "light",
+      "overrides": {}
+    },
+    "codex": {
+      "overrides": {},
+      "styles": {
+        "comment": ["italic"],
+        "keyword": ["bold"],
+        "heading": ["bold"],
+        "link": ["underline"],
+        "invalid": ["bold"]
+      }
+    },
+    "hermes": {
+      "overrides": {}
     }
   }
 }

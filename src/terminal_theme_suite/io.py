@@ -27,8 +27,12 @@ def atomic_write_text(path: Path, text: str, mode: int = 0o644) -> None:
     atomic_write_bytes(path, text.encode("utf-8"), mode=mode)
 
 
-def atomic_write_json(path: Path, value: Any) -> None:
-    atomic_write_text(path, json.dumps(value, indent=2, ensure_ascii=False) + "\n")
+def atomic_write_json(path: Path, value: Any, mode: int = 0o644) -> None:
+    atomic_write_text(
+        path,
+        json.dumps(value, indent=2, ensure_ascii=False) + "\n",
+        mode=mode,
+    )
 
 
 def read_json(path: Path, default: Any = None) -> Any:

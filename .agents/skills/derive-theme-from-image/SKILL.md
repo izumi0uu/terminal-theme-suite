@@ -1,6 +1,6 @@
 ---
 name: derive-theme-from-image
-description: Derive a readable, implementable semantic UI theme from one or more wallpapers, illustrations, photos, or screenshots. Use when Codex must inspect image composition and complexity, extract a raw palette, create a separate accessibility-adjusted palette, map semantic tokens to CSS, Tailwind, component frameworks, ANSI/iTerm2, Herdr, OMP, editor JSON, or TOML, verify WCAG contrast, preserve existing fonts/backgrounds/settings, or apply and screenshot-test the result after explicit authorization. Invoke find-project-style-config first only when the target configuration entry is unknown.
+description: Derive a readable, implementable semantic UI theme from one or more wallpapers, illustrations, photos, or screenshots. Use when Codex must inspect image composition and complexity, extract a raw palette, create a separate accessibility-adjusted palette, map semantic tokens to CSS, Tailwind, component frameworks, ANSI/iTerm2, Herdr, OMP, Claude Code, Codex CLI, Hermes CLI, editor JSON, YAML, or TOML, verify WCAG contrast, preserve existing typography/backgrounds/settings, respect target style capabilities, or apply and screenshot-test the result after explicit authorization. Invoke find-project-style-config first only when the target configuration entry is unknown.
 ---
 
 # Derive Theme From Image
@@ -28,6 +28,7 @@ Collect or infer:
 - target application and target variant, such as dark, light, or both;
 - known theme/config entry and output format;
 - whether configuration changes are authorized;
+- whether terminal typography and semantic emphasis must be inherited or managed;
 - settings that must remain invariant.
 
 If the target entry is unknown, invoke `$find-project-style-config` and use its handoff.
@@ -75,7 +76,19 @@ Add target-specific roles only when consumed by the application. Use
 [references/semantic-theme-mapping.md](references/semantic-theme-mapping.md) for the
 detected target and its validation checklist.
 
-### 4. Check contrast against actual surfaces
+### 4. Separate color derivation from typography
+
+Preserve font family, size, spacing, ligatures, and application-controlled emphasis by
+default. Do not infer a terminal font from image colors. Change typography only after an
+explicit request and only through a documented target field.
+
+For OMP, Claude Code, Codex CLI, or Hermes CLI, read
+[references/coding-agent-theme-capabilities.md](references/coding-agent-theme-capabilities.md).
+Only Codex TextMate scopes accept configurable semantic `bold`, `italic`, and
+`underline` styles in this target set. Report other targets as application-managed;
+never emit unsupported style keys.
+
+### 5. Check contrast against actual surfaces
 
 Test primary text, muted text, links/accents, borders or focus, selection pairs, and
 status colors against every surface where they appear. Use the flat checker for a quick
@@ -114,7 +127,7 @@ on OMP or Herdr. Treat
 [references/terminal-role-matrix.json](references/terminal-role-matrix.json) as the
 machine-readable classification authority.
 
-### 5. Map to the real target structure
+### 6. Map to the real target structure
 
 Map semantic roles through the authoritative adapter discovered in the project. For
 terminal themes, include ANSI 0-15 plus foreground, background, cursor, link, selection,
@@ -123,7 +136,7 @@ and selected text. For image-backed themes, also verify blend, scale mode, and c
 Do not emit unsupported keys. Validate against the target schema or configuration
 checker before writing.
 
-### 6. Sample wallpaper-backed surfaces
+### 7. Sample wallpaper-backed surfaces
 
 A flat background check is only an approximation when text renders over a wallpaper.
 Simulate the real viewport, scale mode, crop anchor, and background blend:
@@ -149,7 +162,7 @@ that semantic against the target application's actual implementation. Use the de
 failures as warnings even when coverage passes; one extreme pixel must not fail the
 theme. Use `--strict` only when every sampled pixel must pass.
 
-### 7. Apply only with authorization
+### 8. Apply only with authorization
 
 When authorized:
 
@@ -160,7 +173,7 @@ When authorized:
 5. verify current and newly created views when runtime defaults differ;
 6. roll back if validation fails.
 
-### 8. Screenshot and iterate
+### 9. Screenshot and iterate
 
 Capture the real target at representative dimensions. Inspect body text, muted labels,
 links, syntax/code, status line, borders, selected state, focus, success/warning/error,
@@ -183,6 +196,7 @@ Also include:
 
 - image composition and crop findings;
 - semantic token set;
+- target capability result, including applied, preserved, and application-managed fields;
 - target mapping path/format;
 - weighted configuration score, selected threshold, and every failed role/surface pair;
 - wallpaper coverage by viewport and role, including P5 and worst-region warnings;

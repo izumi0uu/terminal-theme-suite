@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "saturn-girl-purple",
+  "order": 340,
+  "name": "Saturn Girl Purple",
+  "description": "Deep aubergine with planetary gold and orchid highlights",
+  "wallpaper": {
+    "file": "wallpaper.png",
+    "blend": 0.64,
+    "image_mode": 2
+  },
+  "ansi": [
+    "#C5B3D4",
+    "#E996A0",
+    "#61BF84",
+    "#D7A527",
+    "#F0C65E",
+    "#D495EB",
+    "#4CBBD0",
+    "#F4F1F7",
+    "#D6C7DF",
+    "#EBA5AE",
+    "#79C796",
+    "#DCB148",
+    "#F1CD76",
+    "#D9A4ED",
+    "#67C4D6",
+    "#F4F1F7"
+  ],
+  "colors": {
+    "background": "#24172D",
+    "background_alt": "#302230",
+    "surface": "#34283D",
+    "surface_alt": "#423649",
+    "foreground": "#F4F1F7",
+    "muted": "#D6C7DF",
+    "dim": "#C5B3D4",
+    "accent": "#F0C65E",
+    "accent_alt": "#D495EB",
+    "red": "#E996A0",
+    "green": "#61BF84",
+    "yellow": "#D7A527",
+    "blue": "#F0C65E",
+    "cyan": "#4CBBD0",
+    "teal": "#3DC1AF",
+    "orange": "#DE9F73",
+    "pink": "#D495EB",
+    "selection": "#513E38"
+  },
+  "targets": {
+    "herdr": {
+      "base_theme": "catppuccin",
+      "panel_background": "reset"
+    },
+    "omp": {
+      "colors": {
+        "borderMuted": "#C5B3D4",
+        "mdCodeBlockBorder": "#C5B3D4",
+        "mdQuoteBorder": "#C5B3D4",
+        "mdHr": "#C5B3D4",
+        "thinkingOff": "#C5B3D4",
+        "statusLineSep": "#C5B3D4"
+      }
+    },
+    "claude": {
+      "base": "dark",
+      "overrides": {}
+    },
+    "codex": {
+      "overrides": {},
+      "styles": {
+        "comment": [
+          "italic"
+        ],
+        "keyword": [
+          "bold"
+        ],
+        "heading": [
+          "bold"
+        ],
+        "link": [
+          "underline"
+        ],
+        "invalid": [
+          "bold"
+        ]
+      }
+    },
+    "hermes": {
+      "overrides": {}
+    }
+  }
+}

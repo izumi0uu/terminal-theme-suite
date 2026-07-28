@@ -6,6 +6,19 @@ from typing import Any, Dict, List, Optional
 
 
 @dataclass(frozen=True)
+class TerminalTypography:
+    mode: str = "inherit"
+    font_family: Optional[str] = None
+    non_ascii_font_family: Optional[str] = None
+    font_size: Optional[float] = None
+    horizontal_spacing: float = 1.0
+    vertical_spacing: float = 1.0
+    ligatures: bool = False
+    use_bold_font: bool = True
+    use_italic_font: bool = True
+
+
+@dataclass(frozen=True)
 class Theme:
     id: str
     name: str
@@ -28,6 +41,7 @@ class Theme:
 @dataclass
 class UserConfig:
     themes: List[Theme]
+    terminal_typography: TerminalTypography = field(default_factory=TerminalTypography)
     base_profile_guid: Optional[str] = None
     scope: str = "all"
     shortcuts: bool = True

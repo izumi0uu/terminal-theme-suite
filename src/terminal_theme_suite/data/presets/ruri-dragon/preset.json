@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "ruri-dragon",
+  "order": 210,
+  "name": "Ruri Dragon",
+  "description": "Paper white with cobalt and indigo terminal accents",
+  "wallpaper": {
+    "file": "wallpaper.png",
+    "blend": 0.7,
+    "image_mode": 2
+  },
+  "ansi": [
+    "#47507E",
+    "#B02535",
+    "#2A6842",
+    "#745915",
+    "#174D8F",
+    "#654182",
+    "#1E6572",
+    "#17111E",
+    "#424276",
+    "#982231",
+    "#275A3C",
+    "#654D16",
+    "#17437D",
+    "#593972",
+    "#1D5865",
+    "#17111E"
+  ],
+  "colors": {
+    "background": "#E8F4FA",
+    "background_alt": "#EDF6FB",
+    "surface": "#F0F8FC",
+    "surface_alt": "#D7E2E7",
+    "foreground": "#17111E",
+    "muted": "#424276",
+    "dim": "#47507E",
+    "accent": "#174D8F",
+    "accent_alt": "#654182",
+    "red": "#B02535",
+    "green": "#2A6842",
+    "yellow": "#745915",
+    "blue": "#174D8F",
+    "cyan": "#1E6572",
+    "teal": "#20675D",
+    "orange": "#8C4C21",
+    "pink": "#654182",
+    "selection": "#C7D9E9"
+  },
+  "targets": {
+    "herdr": {
+      "base_theme": "catppuccin-latte",
+      "panel_background": "reset"
+    },
+    "omp": {
+      "colors": {
+        "borderMuted": "#47507E",
+        "mdCodeBlockBorder": "#47507E",
+        "mdQuoteBorder": "#47507E",
+        "mdHr": "#47507E",
+        "thinkingOff": "#47507E",
+        "statusLineSep": "#47507E"
+      }
+    },
+    "claude": {
+      "base": "light",
+      "overrides": {}
+    },
+    "codex": {
+      "overrides": {},
+      "styles": {
+        "comment": [
+          "italic"
+        ],
+        "keyword": [
+          "bold"
+        ],
+        "heading": [
+          "bold"
+        ],
+        "link": [
+          "underline"
+        ],
+        "invalid": [
+          "bold"
+        ]
+      }
+    },
+    "hermes": {
+      "overrides": {}
+    }
+  }
+}

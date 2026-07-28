@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "trunks-solar-yellow",
+  "order": 330,
+  "name": "Trunks Solar Yellow",
+  "description": "Solar yellow with deep navy and violet accents",
+  "wallpaper": {
+    "file": "wallpaper.png",
+    "blend": 0.7,
+    "image_mode": 2
+  },
+  "ansi": [
+    "#51480D",
+    "#9B212F",
+    "#255C3A",
+    "#664E12",
+    "#0A4C70",
+    "#6E294E",
+    "#1B5965",
+    "#17111E",
+    "#443C11",
+    "#861E2C",
+    "#235036",
+    "#594414",
+    "#0C4363",
+    "#602546",
+    "#1A4D5A",
+    "#17111E"
+  ],
+  "colors": {
+    "background": "#F9E10A",
+    "background_alt": "#FAE840",
+    "surface": "#FBEC62",
+    "surface_alt": "#E6D009",
+    "foreground": "#17111E",
+    "muted": "#443C11",
+    "dim": "#51480D",
+    "accent": "#0A4C70",
+    "accent_alt": "#6E294E",
+    "red": "#9B212F",
+    "green": "#255C3A",
+    "yellow": "#664E12",
+    "blue": "#0A4C70",
+    "cyan": "#1B5965",
+    "teal": "#1D5B53",
+    "orange": "#7B431D",
+    "pink": "#6E294E",
+    "selection": "#D3C91A"
+  },
+  "targets": {
+    "herdr": {
+      "base_theme": "catppuccin-latte",
+      "panel_background": "reset"
+    },
+    "omp": {
+      "colors": {
+        "borderMuted": "#51480D",
+        "mdCodeBlockBorder": "#51480D",
+        "mdQuoteBorder": "#51480D",
+        "mdHr": "#51480D",
+        "thinkingOff": "#51480D",
+        "statusLineSep": "#51480D"
+      }
+    },
+    "claude": {
+      "base": "light",
+      "overrides": {}
+    },
+    "codex": {
+      "overrides": {},
+      "styles": {
+        "comment": [
+          "italic"
+        ],
+        "keyword": [
+          "bold"
+        ],
+        "heading": [
+          "bold"
+        ],
+        "link": [
+          "underline"
+        ],
+        "invalid": [
+          "bold"
+        ]
+      }
+    },
+    "hermes": {
+      "overrides": {}
+    }
+  }
+}

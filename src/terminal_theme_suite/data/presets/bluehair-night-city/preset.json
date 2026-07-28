@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "bluehair-night-city",
+  "order": 150,
+  "name": "Bluehair Night City",
+  "description": "Midnight cobalt with glass-blue and coral highlights",
+  "wallpaper": {
+    "file": "wallpaper.png",
+    "blend": 0.6,
+    "image_mode": 2
+  },
+  "ansi": [
+    "#ACB8D0",
+    "#E8929C",
+    "#5ABD7F",
+    "#D5A326",
+    "#82C9FF",
+    "#FF8A98",
+    "#46B8CE",
+    "#F4F1F7",
+    "#C2C8DD",
+    "#EAA1AB",
+    "#73C592",
+    "#DAAF47",
+    "#94CFFE",
+    "#FD9AA7",
+    "#62C1D5",
+    "#F4F1F7"
+  ],
+  "colors": {
+    "background": "#001A3F",
+    "background_alt": "#08244B",
+    "surface": "#132B4D",
+    "surface_alt": "#223959",
+    "foreground": "#F4F1F7",
+    "muted": "#C2C8DD",
+    "dim": "#ACB8D0",
+    "accent": "#82C9FF",
+    "accent_alt": "#FF8A98",
+    "red": "#E8929C",
+    "green": "#5ABD7F",
+    "yellow": "#D5A326",
+    "blue": "#82C9FF",
+    "cyan": "#46B8CE",
+    "teal": "#3CBEAD",
+    "orange": "#DD9B6E",
+    "pink": "#FF8A98",
+    "selection": "#1D4069"
+  },
+  "targets": {
+    "herdr": {
+      "base_theme": "catppuccin",
+      "panel_background": "reset"
+    },
+    "omp": {
+      "colors": {
+        "borderMuted": "#ACB8D0",
+        "mdCodeBlockBorder": "#ACB8D0",
+        "mdQuoteBorder": "#ACB8D0",
+        "mdHr": "#ACB8D0",
+        "thinkingOff": "#ACB8D0",
+        "statusLineSep": "#ACB8D0"
+      }
+    },
+    "claude": {
+      "base": "dark",
+      "overrides": {}
+    },
+    "codex": {
+      "overrides": {},
+      "styles": {
+        "comment": [
+          "italic"
+        ],
+        "keyword": [
+          "bold"
+        ],
+        "heading": [
+          "bold"
+        ],
+        "link": [
+          "underline"
+        ],
+        "invalid": [
+          "bold"
+        ]
+      }
+    },
+    "hermes": {
+      "overrides": {}
+    }
+  }
+}

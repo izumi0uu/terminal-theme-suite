@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "terminal-theme-suite"
-version = "0.3.0"
-description = "Switch iTerm2, Oh My Pi, Herdr, and terminal wallpapers as one theme suite"
+version = "0.7.0"
+description = "Switch iTerm2, Oh My Pi, Herdr, Claude Code, Codex CLI, Hermes CLI, and wallpapers as one suite"
 readme = "README.md"
 requires-python = ">=3.9"
 license = "MIT"
 authors = [{ name = "Booker" }]
-keywords = ["iterm2", "terminal", "theme", "oh-my-pi", "herdr"]
+keywords = ["iterm2", "terminal", "theme", "oh-my-pi", "herdr", "claude-code", "codex", "hermes"]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Environment :: Console",
@@ -18,7 +18,7 @@ classifiers = [
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.9",
 ]
-dependencies = ["tomlkit>=0.12,<1"]
+dependencies = ["PyYAML>=6,<7", "tomlkit>=0.12,<1"]
 
 [project.urls]
 Homepage = "https://github.com/izumi0uu/terminal-theme-suite"
@@ -28,6 +28,12 @@ Issues = "https://github.com/izumi0uu/terminal-theme-suite/issues"
 [project.scripts]
 term-theme = "terminal_theme_suite.cli:main"
 terminal-theme-suite = "terminal_theme_suite.cli:main"
+
+[tool.ruff]
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -40,7 +46,7 @@ terminal_theme_suite = [
   "data/presets/*/*.jpeg",
   "data/presets/*/*.webp",
   "data/presets/*/*.heic",
-  "data/presets/*/LICENSE.txt",
+  "data/presets/*/*.txt",
   "data/schemas/*.json",
   "data/omp/*.ts",
 ]

@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "dragon-ball-lineart",
+  "order": 310,
+  "name": "Dragon Ball Lineart",
+  "description": "Clean manga paper with ink, blue and restrained orange",
+  "wallpaper": {
+    "file": "wallpaper.png",
+    "blend": 0.65,
+    "image_mode": 2
+  },
+  "ansi": [
+    "#674A84",
+    "#B82737",
+    "#2C6D45",
+    "#795C16",
+    "#852A0B",
+    "#1C5378",
+    "#206977",
+    "#17111E",
+    "#594072",
+    "#9E2333",
+    "#295E3F",
+    "#695017",
+    "#73260E",
+    "#1B486A",
+    "#1F5B69",
+    "#17111E"
+  ],
+  "colors": {
+    "background": "#FAFAF8",
+    "background_alt": "#FBFBFA",
+    "surface": "#FCFCFB",
+    "surface_alt": "#E7E7E5",
+    "foreground": "#17111E",
+    "muted": "#594072",
+    "dim": "#674A84",
+    "accent": "#852A0B",
+    "accent_alt": "#1C5378",
+    "red": "#B82737",
+    "green": "#2C6D45",
+    "yellow": "#795C16",
+    "blue": "#852A0B",
+    "cyan": "#206977",
+    "teal": "#226C62",
+    "orange": "#924F22",
+    "pink": "#1C5378",
+    "selection": "#E7D9D2"
+  },
+  "targets": {
+    "herdr": {
+      "base_theme": "catppuccin-latte",
+      "panel_background": "reset"
+    },
+    "omp": {
+      "colors": {
+        "borderMuted": "#674A84",
+        "mdCodeBlockBorder": "#674A84",
+        "mdQuoteBorder": "#674A84",
+        "mdHr": "#674A84",
+        "thinkingOff": "#674A84",
+        "statusLineSep": "#674A84"
+      }
+    },
+    "claude": {
+      "base": "light",
+      "overrides": {}
+    },
+    "codex": {
+      "overrides": {},
+      "styles": {
+        "comment": [
+          "italic"
+        ],
+        "keyword": [
+          "bold"
+        ],
+        "heading": [
+          "bold"
+        ],
+        "link": [
+          "underline"
+        ],
+        "invalid": [
+          "bold"
+        ]
+      }
+    },
+    "hermes": {
+      "overrides": {}
+    }
+  }
+}

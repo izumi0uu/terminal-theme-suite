@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "sailor-saturn-violet",
+  "order": 280,
+  "name": "Sailor Saturn Violet",
+  "description": "Moonlit violet with pearl and teal-jewel highlights",
+  "wallpaper": {
+    "file": "wallpaper.png",
+    "blend": 0.76,
+    "image_mode": 2
+  },
+  "ansi": [
+    "#B8ACD0",
+    "#E78B95",
+    "#51B978",
+    "#CF9E25",
+    "#D5B8FF",
+    "#63D4C5",
+    "#3BB4CB",
+    "#F4F1F7",
+    "#CCBEDA",
+    "#E99BA5",
+    "#6BC28C",
+    "#D5AB47",
+    "#DAC1FE",
+    "#7AD9CD",
+    "#59BED2",
+    "#F4F1F7"
+  ],
+  "colors": {
+    "background": "#17131F",
+    "background_alt": "#221D2C",
+    "surface": "#282530",
+    "surface_alt": "#36333D",
+    "foreground": "#F4F1F7",
+    "muted": "#CCBEDA",
+    "dim": "#B8ACD0",
+    "accent": "#D5B8FF",
+    "accent_alt": "#63D4C5",
+    "red": "#E78B95",
+    "green": "#51B978",
+    "yellow": "#CF9E25",
+    "blue": "#D5B8FF",
+    "cyan": "#3BB4CB",
+    "teal": "#3AB7A6",
+    "orange": "#DB9565",
+    "pink": "#63D4C5",
+    "selection": "#413750"
+  },
+  "targets": {
+    "herdr": {
+      "base_theme": "catppuccin",
+      "panel_background": "reset"
+    },
+    "omp": {
+      "colors": {
+        "borderMuted": "#B8ACD0",
+        "mdCodeBlockBorder": "#B8ACD0",
+        "mdQuoteBorder": "#B8ACD0",
+        "mdHr": "#B8ACD0",
+        "thinkingOff": "#B8ACD0",
+        "statusLineSep": "#B8ACD0"
+      }
+    },
+    "claude": {
+      "base": "dark",
+      "overrides": {}
+    },
+    "codex": {
+      "overrides": {},
+      "styles": {
+        "comment": [
+          "italic"
+        ],
+        "keyword": [
+          "bold"
+        ],
+        "heading": [
+          "bold"
+        ],
+        "link": [
+          "underline"
+        ],
+        "invalid": [
+          "bold"
+        ]
+      }
+    },
+    "hermes": {
+      "overrides": {}
+    }
+  }
+}

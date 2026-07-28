@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, Optional
 
 from ..io import atomic_write_bytes
-from ..models import Theme, UserConfig
+from ..models import TerminalTypography, Theme, UserConfig
 from ..paths import ITERM_PREFS, ITERM_PROFILE_FILE
 
 
@@ -105,6 +105,28 @@ def _source_overrides() -> Dict[str, Any]:
     return {key: deepcopy(source[key]) for key in PASSTHROUGH_KEYS if key in source}
 
 
+def _font_spec(family: str, size: float) -> str:
+    return f"{family} {size:g}"
+
+
+def _typography_overrides(typography: TerminalTypography) -> Dict[str, Any]:
+    if typography.mode != "managed":
+        return {}
+    if not typography.font_family or typography.font_size is None:
+        raise ValueError("Managed terminal typography requires a font family and size")
+    non_ascii = typography.non_ascii_font_family or typography.font_family
+    return {
+        "Normal Font": _font_spec(typography.font_family, typography.font_size),
+        "Non Ascii Font": _font_spec(non_ascii, typography.font_size),
+        "Horizontal Spacing": typography.horizontal_spacing,
+        "Vertical Spacing": typography.vertical_spacing,
+        "ASCII Ligatures": typography.ligatures,
+        "Non-ASCII Ligatures": typography.ligatures,
+        "Use Bold Font": typography.use_bold_font,
+        "Use Italic Font": typography.use_italic_font,
+    }
+
+
 def _command_path(config: UserConfig) -> str:
     override = os.environ.get("TTS_COMMAND_PATH") or config.command_path
     if override:
@@ -161,6 +183,7 @@ def _profile(
     base_guid = discover_base_profile_guid(config.base_profile_guid)
     profile_guid = theme_profile_guid(theme)
     profile: Dict[str, Any] = _source_overrides()
+    profile.update(_typography_overrides(config.terminal_typography))
     profile.update(
         {
             "Name": theme.profile_name,
@@ -211,6 +234,39 @@ def sync_profiles(config: UserConfig, active_theme_id: Optional[str]) -> Path:
     return ITERM_PROFILE_FILE
 
 
+def typography_status(config: UserConfig) -> tuple[bool, str]:
+    try:
+        with ITERM_PROFILE_FILE.open("rb") as handle:
+            profiles = plistlib.load(handle).get("Profiles", [])
+    except (FileNotFoundError, plistlib.InvalidFileException, OSError) as error:
+        return False, str(error)
+    if not profiles:
+        return False, "no generated iTerm2 profiles"
+
+    typography = config.terminal_typography
+    expected = _typography_overrides(typography)
+    if expected:
+        drift = sorted(
+            key
+            for key, value in expected.items()
+            if any(profile.get(key) != value for profile in profiles)
+        )
+        if drift:
+            return False, f"run term-theme sync ({', '.join(drift)})"
+
+    fonts = {str(profile.get("Normal Font", "")).strip() for profile in profiles}
+    fonts.discard("")
+    if len(fonts) != 1:
+        return False, "generated profiles do not share one terminal font"
+    bold = all(bool(profile.get("Use Bold Font", True)) for profile in profiles)
+    italic = all(bool(profile.get("Use Italic Font", True)) for profile in profiles)
+    font = next(iter(fonts))
+    return True, (
+        f"{typography.mode}: {font}; bold={'on' if bold else 'off'}; "
+        f"italic={'on' if italic else 'off'}"
+    )
+
+
 def _iterm_is_running() -> bool:
     if sys.platform != "darwin":
         return False
@@ -223,7 +279,19 @@ def _iterm_is_running() -> bool:
     return result.returncode == 0 and result.stdout.strip().lower() == "true"
 
 
-def enable_api() -> None:
+def api_enabled() -> bool:
+    result = subprocess.run(
+        ["defaults", "read", "com.googlecode.iterm2", "EnableAPIServer"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    return result.returncode == 0 and result.stdout.strip() == "1"
+
+
+def enable_api() -> bool:
+    if api_enabled():
+        return False
     result = subprocess.run(
         [
             "defaults",
@@ -239,6 +307,7 @@ def enable_api() -> None:
     )
     if result.returncode != 0:
         raise RuntimeError(result.stderr.strip() or "Unable to enable the iTerm2 API")
+    return True
 
 
 def _set_persistent_default(profile_guid: str) -> None:

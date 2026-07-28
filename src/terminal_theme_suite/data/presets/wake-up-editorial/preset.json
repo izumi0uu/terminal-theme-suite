@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "wake-up-editorial",
+  "order": 90,
+  "name": "Wake Up Editorial",
+  "description": "Inky editorial blue with crisp electric highlights",
+  "wallpaper": {
+    "file": "wallpaper.png",
+    "blend": 0.56,
+    "image_mode": 2
+  },
+  "ansi": [
+    "#9DA5C8",
+    "#E37A86",
+    "#46AD6D",
+    "#C99A24",
+    "#65A0FF",
+    "#C8D9FF",
+    "#32A7BD",
+    "#F4F1F7",
+    "#B1B5D3",
+    "#E68D98",
+    "#62B883",
+    "#D0A846",
+    "#7CADFE",
+    "#CFDDFE",
+    "#51B3C6",
+    "#F4F1F7"
+  ],
+  "colors": {
+    "background": "#020A18",
+    "background_alt": "#081326",
+    "surface": "#151C29",
+    "surface_alt": "#242B37",
+    "foreground": "#F4F1F7",
+    "muted": "#B1B5D3",
+    "dim": "#9DA5C8",
+    "accent": "#65A0FF",
+    "accent_alt": "#C8D9FF",
+    "red": "#E37A86",
+    "green": "#46AD6D",
+    "yellow": "#C99A24",
+    "blue": "#65A0FF",
+    "cyan": "#32A7BD",
+    "teal": "#36AB9C",
+    "orange": "#D68650",
+    "pink": "#C8D9FF",
+    "selection": "#182B4B"
+  },
+  "targets": {
+    "herdr": {
+      "base_theme": "catppuccin",
+      "panel_background": "reset"
+    },
+    "omp": {
+      "colors": {
+        "borderMuted": "#9DA5C8",
+        "mdCodeBlockBorder": "#9DA5C8",
+        "mdQuoteBorder": "#9DA5C8",
+        "mdHr": "#9DA5C8",
+        "thinkingOff": "#9DA5C8",
+        "statusLineSep": "#9DA5C8"
+      }
+    },
+    "claude": {
+      "base": "dark",
+      "overrides": {}
+    },
+    "codex": {
+      "overrides": {},
+      "styles": {
+        "comment": [
+          "italic"
+        ],
+        "keyword": [
+          "bold"
+        ],
+        "heading": [
+          "bold"
+        ],
+        "link": [
+          "underline"
+        ],
+        "invalid": [
+          "bold"
+        ]
+      }
+    },
+    "hermes": {
+      "overrides": {}
+    }
+  }
+}

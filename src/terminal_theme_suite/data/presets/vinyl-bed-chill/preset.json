@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "vinyl-bed-chill",
+  "order": 200,
+  "name": "Vinyl Bed Chill",
+  "description": "Warm charcoal, linen and sage for a quiet listening room",
+  "wallpaper": {
+    "file": "wallpaper.png",
+    "blend": 0.74,
+    "image_mode": 2
+  },
+  "ansi": [
+    "#AEC0D1",
+    "#EA9BA4",
+    "#6AC38B",
+    "#DAAA30",
+    "#F3C38E",
+    "#A7D8D4",
+    "#57BFD2",
+    "#F8F5FA",
+    "#CFCFE4",
+    "#ECA9B2",
+    "#81CB9D",
+    "#DFB650",
+    "#F4CB9F",
+    "#B4DDDA",
+    "#71C8D8",
+    "#F8F5FA"
+  ],
+  "colors": {
+    "background": "#18211F",
+    "background_alt": "#252B26",
+    "surface": "#293230",
+    "surface_alt": "#373F3D",
+    "foreground": "#F8F5FA",
+    "muted": "#CFCFE4",
+    "dim": "#AEC0D1",
+    "accent": "#F3C38E",
+    "accent_alt": "#A7D8D4",
+    "red": "#EA9BA4",
+    "green": "#6AC38B",
+    "yellow": "#DAAA30",
+    "blue": "#F3C38E",
+    "cyan": "#57BFD2",
+    "teal": "#44C4B3",
+    "orange": "#E0A47A",
+    "pink": "#A7D8D4",
+    "selection": "#484537"
+  },
+  "targets": {
+    "herdr": {
+      "base_theme": "catppuccin",
+      "panel_background": "reset"
+    },
+    "omp": {
+      "colors": {
+        "borderMuted": "#AEC0D1",
+        "mdCodeBlockBorder": "#AEC0D1",
+        "mdQuoteBorder": "#AEC0D1",
+        "mdHr": "#AEC0D1",
+        "thinkingOff": "#AEC0D1",
+        "statusLineSep": "#AEC0D1"
+      }
+    },
+    "claude": {
+      "base": "dark",
+      "overrides": {}
+    },
+    "codex": {
+      "overrides": {},
+      "styles": {
+        "comment": [
+          "italic"
+        ],
+        "keyword": [
+          "bold"
+        ],
+        "heading": [
+          "bold"
+        ],
+        "link": [
+          "underline"
+        ],
+        "invalid": [
+          "bold"
+        ]
+      }
+    },
+    "hermes": {
+      "overrides": {}
+    }
+  }
+}

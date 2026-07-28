@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Iterable, Optional, Sequence
 
 from . import __version__
-from .adapters import iterm2, omp
+from .adapters import claude_code, codex, hermes, iterm2, omp
 from .config import (
     find_theme,
     load_config,
@@ -21,8 +21,11 @@ from .config import (
 from .models import Theme
 from .paths import (
     BACKGROUND_DIR,
+    CLAUDE_ACTIVE_THEME,
+    CODEX_ACTIVE_THEME,
     CONFIG_FILE,
     HERDR_CONFIG,
+    HERMES_ACTIVE_SKIN,
     ITERM_API_DAEMON,
     ITERM_PROFILE_FILE,
     ITERM_RUNTIME_METADATA,
@@ -48,7 +51,7 @@ def _theme_rows(themes: Iterable[Theme], current: str) -> Iterable[str]:
         )
         yield (
             f"{marker} {theme.id:<14} {theme.name:<20} "
-            f"iTerm/OMP/Herdr={theme.herdr_theme:<18} background={background}"
+            f"targets=iTerm/OMP/Herdr/Claude/Codex/Hermes background={background}"
         )
 
 
@@ -70,6 +73,9 @@ def _print_result(result: SwitchResult, quiet: bool, timing: bool = False) -> No
             "iterm2",
             "omp",
             "herdr",
+            "claude",
+            "codex",
+            "hermes",
             "integrations",
             "state",
             "total",
@@ -141,13 +147,7 @@ def _doctor() -> int:
         if config.iterm_daemon
         else ITERM_API_DAEMON
     )
-    api_result = subprocess.run(
-        ["defaults", "read", "com.googlecode.iterm2", "EnableAPIServer"],
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    api_enabled = api_result.returncode == 0 and api_result.stdout.strip() == "1"
+    api_enabled = iterm2.api_enabled()
     iterm_running = iterm2._iterm_is_running()
     daemon_live = iterm2.daemon_ready() if iterm_running else True
     omp_installed = bool(shutil.which("omp"))
@@ -156,6 +156,10 @@ def _doctor() -> int:
         if omp_installed
         else (True, "optional, OMP not found")
     )
+    claude_ready, claude_detail = claude_code.configuration_status()
+    codex_ready, codex_detail = codex.configuration_status()
+    hermes_ready, hermes_detail = hermes.configuration_status()
+    typography_ready, typography_detail = iterm2.typography_status(config)
     checks = [
         ("macOS", platform.system() == "Darwin", platform.platform()),
         ("iTerm2", Path("/Applications/iTerm.app").exists(), "/Applications/iTerm.app"),
@@ -200,14 +204,36 @@ def _doctor() -> int:
             shutil.which("herdr") or "optional, not found",
         ),
         (
+            "Claude Code",
+            bool(shutil.which("claude")),
+            shutil.which("claude") or "optional, not found",
+        ),
+        ("Claude theme", claude_ready, claude_detail),
+        (
+            "Codex CLI",
+            bool(shutil.which("codex")),
+            shutil.which("codex") or "optional, not found",
+        ),
+        ("Codex theme", codex_ready, codex_detail),
+        (
+            "Hermes CLI",
+            bool(shutil.which("hermes")),
+            shutil.which("hermes") or "optional, not found",
+        ),
+        ("Hermes skin", hermes_ready, hermes_detail),
+        (
             "fzf",
             bool(shutil.which("fzf")),
             shutil.which("fzf") or "optional, not found",
         ),
         ("config", CONFIG_FILE.exists(), str(CONFIG_FILE)),
         ("profiles", ITERM_PROFILE_FILE.exists(), str(ITERM_PROFILE_FILE)),
+        ("terminal font", typography_ready, typography_detail),
         ("OMP theme", OMP_ACTIVE_THEME.exists(), str(OMP_ACTIVE_THEME)),
         ("Herdr config", HERDR_CONFIG.exists(), str(HERDR_CONFIG)),
+        ("Claude theme file", CLAUDE_ACTIVE_THEME.exists(), str(CLAUDE_ACTIVE_THEME)),
+        ("Codex theme file", CODEX_ACTIVE_THEME.exists(), str(CODEX_ACTIVE_THEME)),
+        ("Hermes skin file", HERMES_ACTIVE_SKIN.exists(), str(HERMES_ACTIVE_SKIN)),
     ]
     for name, passed, detail in checks:
         print(f"{'ok' if passed else '--':>2}  {name:<14} {detail}")
@@ -219,7 +245,9 @@ def _doctor() -> int:
     for item in missing_backgrounds:
         print(f"!!  missing background {item}")
     required_ok = (
-        all(checks[index][1] for index in range(7)) and not missing_backgrounds
+        all(checks[index][1] for index in range(7))
+        and typography_ready
+        and not missing_backgrounds
     )
     return 0 if required_ok else 1
 
@@ -241,7 +269,10 @@ def _add_switch_options(parser: argparse.ArgumentParser) -> None:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="term-theme",
-        description="Switch iTerm2, OMP, Herdr, and wallpaper as one theme suite.",
+        description=(
+            "Switch iTerm2, OMP, Herdr, Claude Code, Codex CLI, Hermes CLI, "
+            "and wallpaper as one theme suite."
+        ),
     )
     parser.add_argument(
         "--version", action="version", version=f"%(prog)s {__version__}"
@@ -320,7 +351,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             command = "list"
 
         if command == "init":
-            iterm2.enable_api()
+            api_enabled_now = iterm2.enable_api()
             path = write_default_config()
             if args.daemon:
                 update_iterm_daemon(args.daemon)
@@ -330,10 +361,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             print(
                 "Shortcuts: Control+Option+T (next), Control+Option+Shift+T (previous)"
             )
-            print(
-                "iTerm2 API enabled: restart once, then approve its Python Runtime "
-                "download if prompted"
-            )
+            if api_enabled_now:
+                print(
+                    "iTerm2 API enabled: restart once, then approve its Python Runtime "
+                    "download if prompted"
+                )
+            else:
+                print("iTerm2 API already enabled")
             omp_message, omp_warning = configure_omp()
             print(f"OMP: {omp_message}")
             if omp_warning:

@@ -1,15 +1,16 @@
 # Terminal Theme Suite
 
 Switch an iTerm2 color profile, wallpaper, [Oh My Pi](https://github.com/can1357/oh-my-pi)
-theme, and [Herdr](https://github.com/ogulcancelik/herdr) theme as one coordinated suite.
+theme, [Herdr](https://github.com/ogulcancelik/herdr) theme, Claude Code theme,
+Codex CLI syntax theme, and Hermes CLI skin as one coordinated suite.
 
 The same command powers both the CLI and iTerm2 shortcuts, so switching works even
 while OMP, Herdr, Vim, or another full-screen terminal program has focus.
 
 ## Features
 
-- Coordinated semantic palettes for iTerm2, OMP, and Herdr
-- Four curated self-contained presets with bundled wallpapers
+- Coordinated semantic palettes for iTerm2, OMP, Herdr, Claude Code, Codex CLI, and Hermes CLI
+- 37 curated self-contained presets with bundled PNG wallpapers
 - Private custom wallpaper overrides that are never added to this repository
 - iTerm2 Dynamic Profiles that inherit your font, shell, and window settings
 - `Control+Option+T` for next theme
@@ -18,9 +19,13 @@ while OMP, Herdr, Vim, or another full-screen terminal program has focus.
 - Interactive `fzf` picker and scriptable commands
 - Atomic configuration writes and Herdr validation before live reload
 - An OMP startup extension that enables live reload in every new OMP process
-- Parallel iTerm2, OMP, and Herdr updates with an inter-process switch lock
+- Native Claude Code custom theme with hot reload after one-time activation
+- Native Codex `.tmTheme` generation for syntax highlighting and file diffs
+- Native Hermes skin generation for both the classic CLI and modern TUI
+- Parallel application updates with an inter-process switch lock
 
-Built-in suites:
+There are 37 built-in suites. The original four are shown below; run
+`term-theme list` to view the complete wallpaper catalog.
 
 - Hero Amber
 - Catppuccin Mocha
@@ -35,15 +40,21 @@ Built-in suites:
 
 - macOS and iTerm2
 - Python 3.9 or newer
-- OMP and Herdr are optional; missing integrations are skipped
+- Git LFS
+- OMP and Herdr are optional
+- Claude Code 2.1.118 or newer is optional
+- Codex CLI is optional
+- Hermes Agent 0.18 or newer is optional
 - `fzf` is optional but recommended for the interactive picker
 - iTerm2's Python API, enabled automatically by `term-theme init`
 
 ## Install
 
 ```bash
+git lfs install
 git clone https://github.com/izumi0uu/terminal-theme-suite.git
 cd terminal-theme-suite
+git lfs pull
 ./scripts/install.sh
 ```
 
@@ -80,8 +91,9 @@ or lists themes when output is redirected.
 
 ### Wallpapers
 
-Every built-in suite includes a matching 1586x992 wallpaper. No wallpaper setup is
-required after installation. Custom images are copied into the private user
+Every built-in suite includes a matching PNG wallpaper. The original four use
+1586x992 assets; the 33 image-matched suites use 2880x1800 assets. No wallpaper setup
+is required after installation. Custom images are copied into the private user
 configuration directory by default and override only the selected suite:
 
 ```bash
@@ -114,6 +126,9 @@ theme suite
   -> iTerm2 Dynamic Profile: ANSI 0-15, foreground, cursor, selection, wallpaper
   -> OMP custom theme: messages, Markdown, tools, syntax, status line
   -> Herdr config: panels, text, borders, status colors, live reload
+  -> Claude Code custom theme: prompts, diffs, messages, status, subagents
+  -> Codex .tmTheme: fenced code syntax and inserted/removed diff scopes
+  -> Hermes skin: prompts, banners, completions, status, selection, and feedback
 ```
 
 The generated iTerm2 profiles use the current default profile as their parent. This
@@ -145,14 +160,41 @@ periodic heartbeat or background write. Restarting is not required after later t
 switches.
 
 The switch hot path only atomically replaces the managed OMP theme JSON; it does not
-start the OMP CLI. iTerm2, OMP, and Herdr updates run concurrently after the target
-theme is resolved. A file lock serializes overlapping shortcut presses, including
+start the OMP CLI. All application adapters run concurrently after the target theme
+is resolved. A file lock serializes overlapping shortcut presses, including
 calculating `next` and `previous`, so overlapping switches cannot interleave. Run
 `term-theme repair` if `term-theme doctor` reports OMP configuration drift.
 
 Herdr's existing TOML configuration is preserved. Only `[theme]` and
 `[theme.custom]` values are managed, followed by `herdr config check` and
 `herdr server reload-config`.
+
+Claude Code uses one stable managed theme at
+`~/.claude/themes/terminal-theme-suite.json`. The adapter preserves unrelated
+fields in `~/.claude/settings.json` and selects
+`custom:terminal-theme-suite`. If the themes directory did not exist when a
+Claude Code session started, restart that session once after the first switch.
+Later switches rewrite the same active file and Claude Code hot-reloads it.
+Claude does not expose an application ACK, so the switcher reports the documented
+hot-reload behavior without claiming runtime confirmation.
+
+Codex CLI uses one stable TextMate theme at
+`~/.codex/themes/terminal-theme-suite.tmTheme`. The adapter preserves the full
+`~/.codex/config.toml` document and sets `[tui] theme = "terminal-theme-suite"`.
+Codex currently loads external `.tmTheme` data into process memory and does not
+watch the file. After a suite switch, reselect `terminal-theme-suite` with `/theme`
+or restart a running Codex TUI to refresh syntax and diff colors. The iTerm2 profile
+continues to control the terminal background, ANSI palette, and overall foreground;
+the `.tmTheme` does not recolor every Codex TUI element or the Codex desktop app.
+
+Hermes uses one stable managed skin at
+`~/.hermes/skins/terminal-theme-suite.yaml`. The adapter preserves unrelated
+values in `~/.hermes/config.yaml` and sets
+`display.skin: terminal-theme-suite`. Both the classic Hermes CLI and modern TUI
+consume the same skin. Running Hermes sessions cache skin data; after an external
+suite switch, run `/skin terminal-theme-suite` in that session or restart it.
+The TUI emits its native `skin.changed` event when `/skin` is used, so the repaint
+is immediate without restarting the underlying agent session.
 
 ## Configuration
 
@@ -169,6 +211,9 @@ Example override:
   "base_profile_guid": null,
   "scope": "all",
   "shortcuts": true,
+  "terminal_typography": {
+    "mode": "inherit"
+  },
   "themes": {
     "hero-amber": {
       "background": "~/.config/terminal-theme-suite/backgrounds/hero-amber.png",
@@ -185,6 +230,30 @@ Example override:
 
 Set `scope` to `current` to switch only the focused iTerm2 session. The default is
 `all` because OMP and Herdr use global theme configuration.
+
+Terminal font family, size, spacing, ligatures, and bold/italic face availability are
+global user settings shared by every terminal application. The default `inherit` mode
+copies them from the current iTerm2 base profile. Use `managed` only when this project
+should make the values explicit in every generated profile:
+
+```json
+{
+  "terminal_typography": {
+    "mode": "managed",
+    "font_family": "MesloLGSNF-Regular",
+    "non_ascii_font_family": "MesloLGSNF-Regular",
+    "font_size": 14,
+    "horizontal_spacing": 1,
+    "vertical_spacing": 1.05,
+    "ligatures": true,
+    "use_bold_font": true,
+    "use_italic_font": true
+  }
+}
+```
+
+Run `term-theme sync` after changing typography. OMP's `symbolPreset: nerd` selects
+icons but does not install or select a Nerd Font.
 
 Regenerate profiles after manual changes:
 
@@ -204,7 +273,9 @@ hero-amber/
 ```
 
 `preset.json` is the authority for the semantic palette, 16 ANSI colors, wallpaper
-settings, and target-specific overrides. Wallpaper paths are relative to the preset
+settings, and target-specific overrides. Codex targets may additionally define
+semantic `styles` using `bold`, `italic`, and `underline`; OMP, Claude Code, and Hermes
+keep their application-managed emphasis. Wallpaper paths are relative to the preset
 directory. The loader discovers directories automatically, so adding a preset does
 not require changing Python code. IDs must be unique and match their directory names.
 Optional `preview` and `license_file` fields can reference files in the same directory
@@ -218,11 +289,15 @@ against the JSON Schema.
 
 ## Privacy and Safety
 
-- Bundled preset wallpapers are distributed under this repository's license.
+- Do not assume the repository license covers newly imported artwork. Presets omit
+  source and license metadata until those rights are verified.
 - Custom wallpapers and local paths stay under your home directory and are ignored
   by Git.
 - The project does not use network APIs at runtime.
 - Existing iTerm2 profiles are not rewritten.
+- Existing Claude Code settings are preserved except for the selected `theme`.
+- Existing Codex config, providers, MCP servers, plugins, and comments are preserved.
+- Existing Hermes configuration values are preserved except for `display.skin`.
 - Herdr config changes are validated and rolled back when validation fails.
 - OMP model, provider, and authentication settings are not modified.
 - The OMP extension only calls the local `ctx.ui.setTheme` API at session startup and
@@ -230,7 +305,7 @@ against the JSON Schema.
 
 ## 中文快速说明
 
-这个工具把 iTerm2 配色和背景图、OMP 主题、Herdr 主题作为一套配置同步切换。
+这个工具把 iTerm2 配色和背景图、OMP 主题、Herdr 主题、Claude Code 主题、Codex CLI 代码主题、Hermes CLI 皮肤作为一套配置同步切换。
 
 ```bash
 term-theme list                  # 查看全部套装
@@ -251,7 +326,13 @@ iTerm2 内快捷键：
 
 安装或运行 `term-theme init` 后，之前已经运行的 OMP 需要重开一次以加载扩展。Herdr 会保留内部进程，所以只重启 iTerm2 不会重启 Herdr 里的 OMP。扩展加载后会在 `~/.config/terminal-theme-suite/omp-runtime/` 写一次运行状态；每次切换只在主题真正重载后写入对应 generation 和主题 hash 的 ACK，没有定时心跳。`doctor` 和 `omp-live-reload status` 只有在运行中的 OMP 真正加载扩展且最新主题已确认后才会报告 watcher active。
 
-普通切换只原子替换 OMP 主题 JSON，iTerm2、OMP、Herdr 会并行更新。多个快捷键命令会通过文件锁依次执行，避免多次切换彼此交错。`term-theme doctor` 如果提示 OMP 配置漂移，运行：
+Claude Code 第一次接入时需要重启当前 Claude 会话一次；以后切换会重写同一个 `terminal-theme-suite.json`，由 Claude Code 自动热重载。普通切换中所有应用适配器会并行更新。多个快捷键命令会通过文件锁依次执行，避免多次切换彼此交错。`term-theme doctor` 如果提示 OMP 配置漂移，运行：
+
+Codex CLI 会读取 `~/.codex/themes/terminal-theme-suite.tmTheme`，只负责代码高亮和 diff。Codex 目前不会监听外部主题文件，所以每次切换后，需要在正在运行的 Codex TUI 中用 `/theme` 重新选择 `terminal-theme-suite`，或者重启该 Codex 会话。
+
+Hermes CLI 会读取 `~/.hermes/skins/terminal-theme-suite.yaml`。经典 CLI 和现代 TUI 共用这套皮肤；切换后在已运行的 Hermes 会话中执行 `/skin terminal-theme-suite` 即可立即刷新，或者重启该会话。
+
+字体族、字号、间距和连字由 `terminal_typography` 统一管理。默认 `inherit` 保留 iTerm2 当前字体；设置为 `managed` 后运行 `term-theme sync`，四个 Coding Agent 会共享生成 Profile 的字体。只有 Codex 支持预设中的 `bold`、`italic`、`underline` 语义样式，OMP、Claude Code 和 Hermes 保留各自内置样式。
 
 ```bash
 term-theme repair

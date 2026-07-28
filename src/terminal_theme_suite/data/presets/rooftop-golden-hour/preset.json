@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "rooftop-golden-hour",
+  "order": 130,
+  "name": "Rooftop Golden Hour",
+  "description": "Warm ivory rooftop light with navy and rust accents",
+  "wallpaper": {
+    "file": "wallpaper.png",
+    "blend": 0.82,
+    "image_mode": 2
+  },
+  "ansi": [
+    "#4B362A",
+    "#831C27",
+    "#1F4D30",
+    "#55410F",
+    "#254668",
+    "#683448",
+    "#164B55",
+    "#17111E",
+    "#422725",
+    "#721A26",
+    "#1E432D",
+    "#4B3911",
+    "#233E5C",
+    "#5B2E41",
+    "#16424C",
+    "#17111E"
+  ],
+  "colors": {
+    "background": "#DCC7A6",
+    "background_alt": "#E4D3BA",
+    "surface": "#E9DBC6",
+    "surface_alt": "#CCB89A",
+    "foreground": "#17111E",
+    "muted": "#422725",
+    "dim": "#4B362A",
+    "accent": "#254668",
+    "accent_alt": "#683448",
+    "red": "#831C27",
+    "green": "#1F4D30",
+    "yellow": "#55410F",
+    "blue": "#254668",
+    "cyan": "#164B55",
+    "teal": "#184C45",
+    "orange": "#673818",
+    "pink": "#683448",
+    "selection": "#BFB29C"
+  },
+  "targets": {
+    "herdr": {
+      "base_theme": "catppuccin-latte",
+      "panel_background": "reset"
+    },
+    "omp": {
+      "colors": {
+        "borderMuted": "#4B362A",
+        "mdCodeBlockBorder": "#4B362A",
+        "mdQuoteBorder": "#4B362A",
+        "mdHr": "#4B362A",
+        "thinkingOff": "#4B362A",
+        "statusLineSep": "#4B362A"
+      }
+    },
+    "claude": {
+      "base": "light",
+      "overrides": {}
+    },
+    "codex": {
+      "overrides": {},
+      "styles": {
+        "comment": [
+          "italic"
+        ],
+        "keyword": [
+          "bold"
+        ],
+        "heading": [
+          "bold"
+        ],
+        "link": [
+          "underline"
+        ],
+        "invalid": [
+          "bold"
+        ]
+      }
+    },
+    "hermes": {
+      "overrides": {}
+    }
+  }
+}

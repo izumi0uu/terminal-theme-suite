@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "pink-braids-noir",
+  "order": 100,
+  "name": "Pink Braids Noir",
+  "description": "Near-black charcoal with rose and muted-gold highlights",
+  "wallpaper": {
+    "file": "wallpaper.png",
+    "blend": 0.58,
+    "image_mode": 2
+  },
+  "ansi": [
+    "#B19BC7",
+    "#E27682",
+    "#45AA6B",
+    "#C99A24",
+    "#F1A2B7",
+    "#E1B768",
+    "#32A6BC",
+    "#F4F1F7",
+    "#BEACD0",
+    "#E58A95",
+    "#61B581",
+    "#D0A846",
+    "#F1AFC1",
+    "#E4C07F",
+    "#51B2C5",
+    "#F4F1F7"
+  ],
+  "colors": {
+    "background": "#080707",
+    "background_alt": "#161012",
+    "surface": "#1B1A1A",
+    "surface_alt": "#292828",
+    "foreground": "#F4F1F7",
+    "muted": "#BEACD0",
+    "dim": "#B19BC7",
+    "accent": "#F1A2B7",
+    "accent_alt": "#E1B768",
+    "red": "#E27682",
+    "green": "#45AA6B",
+    "yellow": "#C99A24",
+    "blue": "#F1A2B7",
+    "cyan": "#32A6BC",
+    "teal": "#35A899",
+    "orange": "#D5834A",
+    "pink": "#E1B768",
+    "selection": "#3B292E"
+  },
+  "targets": {
+    "herdr": {
+      "base_theme": "catppuccin",
+      "panel_background": "reset"
+    },
+    "omp": {
+      "colors": {
+        "borderMuted": "#B19BC7",
+        "mdCodeBlockBorder": "#B19BC7",
+        "mdQuoteBorder": "#B19BC7",
+        "mdHr": "#B19BC7",
+        "thinkingOff": "#B19BC7",
+        "statusLineSep": "#B19BC7"
+      }
+    },
+    "claude": {
+      "base": "dark",
+      "overrides": {}
+    },
+    "codex": {
+      "overrides": {},
+      "styles": {
+        "comment": [
+          "italic"
+        ],
+        "keyword": [
+          "bold"
+        ],
+        "heading": [
+          "bold"
+        ],
+        "link": [
+          "underline"
+        ],
+        "invalid": [
+          "bold"
+        ]
+      }
+    },
+    "hermes": {
+      "overrides": {}
+    }
+  }
+}

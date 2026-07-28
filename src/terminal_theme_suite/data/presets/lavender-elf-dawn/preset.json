@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "lavender-elf-dawn",
+  "order": 230,
+  "name": "Lavender Elf Dawn",
+  "description": "Twilight charcoal with lavender and rose-gold highlights",
+  "wallpaper": {
+    "file": "wallpaper.png",
+    "blend": 0.7,
+    "image_mode": 2
+  },
+  "ansi": [
+    "#B9B1D3",
+    "#E8919B",
+    "#58BC7D",
+    "#D2A126",
+    "#D7B8F5",
+    "#F0B7C8",
+    "#43B7CD",
+    "#F4F1F7",
+    "#CBC4DE",
+    "#EAA0AA",
+    "#71C491",
+    "#D7AE47",
+    "#DCC1F5",
+    "#F1C0D0",
+    "#5FC0D4",
+    "#F4F1F7"
+  ],
+  "colors": {
+    "background": "#191723",
+    "background_alt": "#242130",
+    "surface": "#2A2834",
+    "surface_alt": "#383641",
+    "foreground": "#F4F1F7",
+    "muted": "#CBC4DE",
+    "dim": "#B9B1D3",
+    "accent": "#D7B8F5",
+    "accent_alt": "#F0B7C8",
+    "red": "#E8919B",
+    "green": "#58BC7D",
+    "yellow": "#D2A126",
+    "blue": "#D7B8F5",
+    "cyan": "#43B7CD",
+    "teal": "#3BBBAA",
+    "orange": "#DD9A6D",
+    "pink": "#F0B7C8",
+    "selection": "#433A51"
+  },
+  "targets": {
+    "herdr": {
+      "base_theme": "catppuccin",
+      "panel_background": "reset"
+    },
+    "omp": {
+      "colors": {
+        "borderMuted": "#B9B1D3",
+        "mdCodeBlockBorder": "#B9B1D3",
+        "mdQuoteBorder": "#B9B1D3",
+        "mdHr": "#B9B1D3",
+        "thinkingOff": "#B9B1D3",
+        "statusLineSep": "#B9B1D3"
+      }
+    },
+    "claude": {
+      "base": "dark",
+      "overrides": {}
+    },
+    "codex": {
+      "overrides": {},
+      "styles": {
+        "comment": [
+          "italic"
+        ],
+        "keyword": [
+          "bold"
+        ],
+        "heading": [
+          "bold"
+        ],
+        "link": [
+          "underline"
+        ],
+        "invalid": [
+          "bold"
+        ]
+      }
+    },
+    "hermes": {
+      "overrides": {}
+    }
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "android18-redline",
+  "order": 60,
+  "name": "Android 18 Redline",
+  "description": "Deep crimson with ice-blue accents for Android 18",
+  "wallpaper": {
+    "file": "wallpaper.png",
+    "blend": 0.76,
+    "image_mode": 2
+  },
+  "ansi": [
+    "#D5B4BF",
+    "#E999A2",
+    "#65C187",
+    "#D9A729",
+    "#8ADAF2",
+    "#FFC1A3",
+    "#52BDD1",
+    "#F5F3F8",
+    "#E0C8D3",
+    "#EBA7B0",
+    "#7CC999",
+    "#DDB34A",
+    "#9BDEF3",
+    "#FDC9B1",
+    "#6CC6D7",
+    "#F5F3F8"
+  ],
+  "colors": {
+    "background": "#4A081B",
+    "background_alt": "#4E1528",
+    "surface": "#581B2C",
+    "surface_alt": "#62293A",
+    "foreground": "#F5F3F8",
+    "muted": "#E0C8D3",
+    "dim": "#D5B4BF",
+    "accent": "#8ADAF2",
+    "accent_alt": "#FFC1A3",
+    "red": "#E999A2",
+    "green": "#65C187",
+    "yellow": "#D9A729",
+    "blue": "#8ADAF2",
+    "cyan": "#52BDD1",
+    "teal": "#3EC2B0",
+    "orange": "#DFA177",
+    "pink": "#FFC1A3",
+    "selection": "#58364A"
+  },
+  "targets": {
+    "herdr": {
+      "base_theme": "catppuccin",
+      "panel_background": "reset"
+    },
+    "omp": {
+      "colors": {
+        "borderMuted": "#D5B4BF",
+        "mdCodeBlockBorder": "#D5B4BF",
+        "mdQuoteBorder": "#D5B4BF",
+        "mdHr": "#D5B4BF",
+        "thinkingOff": "#D5B4BF",
+        "statusLineSep": "#D5B4BF"
+      }
+    },
+    "claude": {
+      "base": "dark",
+      "overrides": {}
+    },
+    "codex": {
+      "overrides": {},
+      "styles": {
+        "comment": [
+          "italic"
+        ],
+        "keyword": [
+          "bold"
+        ],
+        "heading": [
+          "bold"
+        ],
+        "link": [
+          "underline"
+        ],
+        "invalid": [
+          "bold"
+        ]
+      }
+    },
+    "hermes": {
+      "overrides": {}
+    }
+  }
+}

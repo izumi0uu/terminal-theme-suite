@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "duckegg-fashion",
+  "order": 360,
+  "name": "Duckegg Fashion",
+  "description": "Duck-egg blue with deep teal and mulberry accents",
+  "wallpaper": {
+    "file": "wallpaper.png",
+    "blend": 0.68,
+    "image_mode": 2
+  },
+  "ansi": [
+    "#2C3C4D",
+    "#831C27",
+    "#1F4D30",
+    "#55410F",
+    "#62374D",
+    "#094C56",
+    "#164B55",
+    "#17111E",
+    "#262E44",
+    "#721A26",
+    "#1E432D",
+    "#4B3911",
+    "#563145",
+    "#0B434D",
+    "#16424C",
+    "#17111E"
+  ],
+  "colors": {
+    "background": "#B8CFCE",
+    "background_alt": "#C8DAD9",
+    "surface": "#D2E0E0",
+    "surface_alt": "#AABFBF",
+    "foreground": "#17111E",
+    "muted": "#262E44",
+    "dim": "#2C3C4D",
+    "accent": "#62374D",
+    "accent_alt": "#094C56",
+    "red": "#831C27",
+    "green": "#1F4D30",
+    "yellow": "#55410F",
+    "blue": "#62374D",
+    "cyan": "#164B55",
+    "teal": "#184C45",
+    "orange": "#673818",
+    "pink": "#094C56",
+    "selection": "#AAB7B9"
+  },
+  "targets": {
+    "herdr": {
+      "base_theme": "catppuccin-latte",
+      "panel_background": "reset"
+    },
+    "omp": {
+      "colors": {
+        "borderMuted": "#2C3C4D",
+        "mdCodeBlockBorder": "#2C3C4D",
+        "mdQuoteBorder": "#2C3C4D",
+        "mdHr": "#2C3C4D",
+        "thinkingOff": "#2C3C4D",
+        "statusLineSep": "#2C3C4D"
+      }
+    },
+    "claude": {
+      "base": "light",
+      "overrides": {}
+    },
+    "codex": {
+      "overrides": {},
+      "styles": {
+        "comment": [
+          "italic"
+        ],
+        "keyword": [
+          "bold"
+        ],
+        "heading": [
+          "bold"
+        ],
+        "link": [
+          "underline"
+        ],
+        "invalid": [
+          "bold"
+        ]
+      }
+    },
+    "hermes": {
+      "overrides": {}
+    }
+  }
+}

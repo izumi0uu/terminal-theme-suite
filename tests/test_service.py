@@ -46,6 +46,21 @@ class ServiceTests(unittest.TestCase):
                     "apply_theme",
                     return_value=("Herdr switched", None),
                 ),
+                patch.object(
+                    service.claude_code,
+                    "apply_theme",
+                    return_value=("Claude switched", None),
+                ),
+                patch.object(
+                    service.codex,
+                    "apply_theme",
+                    return_value=("Codex switched", None),
+                ),
+                patch.object(
+                    service.hermes,
+                    "apply_theme",
+                    return_value=("Hermes switched", None),
+                ),
                 patch.object(service, "atomic_write_json"),
             ):
                 result = service.apply("hero-amber")
@@ -54,7 +69,7 @@ class ServiceTests(unittest.TestCase):
 
     def test_apply_runs_integrations_in_parallel(self):
         config = load_config()
-        barrier = threading.Barrier(3, timeout=2)
+        barrier = threading.Barrier(6, timeout=2)
 
         def iterm_apply(*_args):
             barrier.wait()
@@ -68,6 +83,18 @@ class ServiceTests(unittest.TestCase):
             barrier.wait()
             return "Herdr switched", None
 
+        def claude_apply(_theme):
+            barrier.wait()
+            return "Claude switched", None
+
+        def codex_apply(_theme):
+            barrier.wait()
+            return "Codex switched", None
+
+        def hermes_apply(_theme):
+            barrier.wait()
+            return "Hermes switched", None
+
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             profile_file = root / "profiles.plist"
@@ -80,6 +107,11 @@ class ServiceTests(unittest.TestCase):
                 patch.object(service.iterm2, "apply_profile", side_effect=iterm_apply),
                 patch.object(service.omp, "apply_theme", side_effect=omp_apply),
                 patch.object(service.herdr, "apply_theme", side_effect=herdr_apply),
+                patch.object(
+                    service.claude_code, "apply_theme", side_effect=claude_apply
+                ),
+                patch.object(service.codex, "apply_theme", side_effect=codex_apply),
+                patch.object(service.hermes, "apply_theme", side_effect=hermes_apply),
                 patch.object(service, "atomic_write_json"),
             ):
                 result = service.apply("hero-amber")
@@ -88,6 +120,9 @@ class ServiceTests(unittest.TestCase):
         self.assertIn("iterm2", result.timings)
         self.assertIn("omp", result.timings)
         self.assertIn("herdr", result.timings)
+        self.assertIn("claude", result.timings)
+        self.assertIn("codex", result.timings)
+        self.assertIn("hermes", result.timings)
         self.assertIn("total", result.timings)
         self.assertEqual(
             result.messages,
@@ -96,6 +131,9 @@ class ServiceTests(unittest.TestCase):
                 "iTerm2 switched",
                 "OMP switched",
                 "Herdr switched",
+                "Claude switched",
+                "Codex switched",
+                "Hermes switched",
             ],
         )
 
@@ -122,6 +160,21 @@ class ServiceTests(unittest.TestCase):
                     service.herdr,
                     "apply_theme",
                     return_value=("Herdr switched", None),
+                ),
+                patch.object(
+                    service.claude_code,
+                    "apply_theme",
+                    return_value=("Claude switched", None),
+                ),
+                patch.object(
+                    service.codex,
+                    "apply_theme",
+                    return_value=("Codex switched", None),
+                ),
+                patch.object(
+                    service.hermes,
+                    "apply_theme",
+                    return_value=("Hermes switched", None),
                 ),
                 patch.object(service, "atomic_write_json") as write_state,
             ):
@@ -160,6 +213,21 @@ class ServiceTests(unittest.TestCase):
                     service.herdr,
                     "apply_theme",
                     return_value=("Herdr switched", None),
+                ),
+                patch.object(
+                    service.claude_code,
+                    "apply_theme",
+                    return_value=("Claude switched", None),
+                ),
+                patch.object(
+                    service.codex,
+                    "apply_theme",
+                    return_value=("Codex switched", None),
+                ),
+                patch.object(
+                    service.hermes,
+                    "apply_theme",
+                    return_value=("Hermes switched", None),
                 ),
             ):
                 with ThreadPoolExecutor(max_workers=2) as executor:

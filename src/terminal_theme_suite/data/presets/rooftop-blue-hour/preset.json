@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "rooftop-blue-hour",
+  "order": 140,
+  "name": "Rooftop Blue Hour",
+  "description": "Deep rooftop blue with sky and amber highlights",
+  "wallpaper": {
+    "file": "wallpaper.png",
+    "blend": 0.58,
+    "image_mode": 2
+  },
+  "ansi": [
+    "#ABB7D0",
+    "#E8919B",
+    "#5ABD7F",
+    "#D3A226",
+    "#83C3FF",
+    "#F1B56A",
+    "#44B8CD",
+    "#F4F1F7",
+    "#C2C8DD",
+    "#EAA0AA",
+    "#73C592",
+    "#D8AF47",
+    "#95CAFE",
+    "#F1BF81",
+    "#60C1D4",
+    "#F4F1F7"
+  ],
+  "colors": {
+    "background": "#061A34",
+    "background_alt": "#0E2440",
+    "surface": "#192B43",
+    "surface_alt": "#28394F",
+    "foreground": "#F4F1F7",
+    "muted": "#C2C8DD",
+    "dim": "#ABB7D0",
+    "accent": "#83C3FF",
+    "accent_alt": "#F1B56A",
+    "red": "#E8919B",
+    "green": "#5ABD7F",
+    "yellow": "#D3A226",
+    "blue": "#83C3FF",
+    "cyan": "#44B8CD",
+    "teal": "#3CBCAB",
+    "orange": "#DD9B6E",
+    "pink": "#F1B56A",
+    "selection": "#223F61"
+  },
+  "targets": {
+    "herdr": {
+      "base_theme": "catppuccin",
+      "panel_background": "reset"
+    },
+    "omp": {
+      "colors": {
+        "borderMuted": "#ABB7D0",
+        "mdCodeBlockBorder": "#ABB7D0",
+        "mdQuoteBorder": "#ABB7D0",
+        "mdHr": "#ABB7D0",
+        "thinkingOff": "#ABB7D0",
+        "statusLineSep": "#ABB7D0"
+      }
+    },
+    "claude": {
+      "base": "dark",
+      "overrides": {}
+    },
+    "codex": {
+      "overrides": {},
+      "styles": {
+        "comment": [
+          "italic"
+        ],
+        "keyword": [
+          "bold"
+        ],
+        "heading": [
+          "bold"
+        ],
+        "link": [
+          "underline"
+        ],
+        "invalid": [
+          "bold"
+        ]
+      }
+    },
+    "hermes": {
+      "overrides": {}
+    }
+  }
+}

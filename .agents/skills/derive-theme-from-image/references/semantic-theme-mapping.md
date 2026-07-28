@@ -65,6 +65,9 @@ adapter maps these variables into framework tokens before editing them.
   link, wallpaper path, image mode, and blend.
 
 Check profile inheritance and both current-session and new-session behavior.
+Preserve font family, font size, spacing, ligatures, and bold/italic face settings by
+default. Apply managed typography only after an explicit request; it is a terminal
+setting shared by terminal applications, not a color inferred from the image.
 
 ### Herdr TOML
 
@@ -78,6 +81,26 @@ Map model output, user text, tool output, Markdown, status line, borders, pendin
 success, warning, and error roles. Preserve the supported schema exactly, configure
 both dark and light theme slots when the application does not expose an automatic
 variant, and verify the running process actually reloads the file.
+
+### Claude Code JSON
+
+Map the supported semantic override tokens for prompts, messages, diffs, status,
+selection, and subagents. Preserve terminal typography and Claude-controlled emphasis.
+Rewrite a stable custom-theme file so later color changes use the documented reload
+path.
+
+### Codex TextMate theme
+
+Map syntax and diff roles into `.tmTheme` scopes. Map semantic `bold`, `italic`, and
+`underline` only when the preset or user explicitly supplies supported styles. Preserve
+terminal typography. Reselect the managed theme with `/theme` or restart the TUI after
+external file changes.
+
+### Hermes skin YAML
+
+Map documented banner, prompt, status, selection, completion, and feedback colors.
+Preserve Hermes-controlled emphasis and terminal typography. Reload a running session
+with `/skin <name>` and verify the gateway resolves the managed skin.
 
 ### Editors
 

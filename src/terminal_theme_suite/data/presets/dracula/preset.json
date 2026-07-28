@@ -40,6 +40,23 @@
     "herdr": {
       "base_theme": "dracula",
       "panel_background": "background"
+    },
+    "claude": {
+      "base": "dark",
+      "overrides": {}
+    },
+    "codex": {
+      "overrides": {},
+      "styles": {
+        "comment": ["italic"],
+        "keyword": ["bold"],
+        "heading": ["bold"],
+        "link": ["underline"],
+        "invalid": ["bold"]
+      }
+    },
+    "hermes": {
+      "overrides": {}
     }
   }
 }

@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "orbital-heroine",
+  "order": 160,
+  "name": "Orbital Heroine",
+  "description": "Near-black space with moonlit blue and violet accents",
+  "wallpaper": {
+    "file": "wallpaper.png",
+    "blend": 0.8,
+    "image_mode": 2
+  },
+  "ansi": [
+    "#9F9FC9",
+    "#E27682",
+    "#44A96A",
+    "#C99A24",
+    "#A9CDFF",
+    "#D8BCFF",
+    "#32A6BC",
+    "#F4F1F7",
+    "#B3AFD2",
+    "#E58A95",
+    "#60B581",
+    "#D0A846",
+    "#B5D3FE",
+    "#DCC4FE",
+    "#51B2C5",
+    "#F4F1F7"
+  ],
+  "colors": {
+    "background": "#020611",
+    "background_alt": "#0C121F",
+    "surface": "#151923",
+    "surface_alt": "#242831",
+    "foreground": "#F4F1F7",
+    "muted": "#B3AFD2",
+    "dim": "#9F9FC9",
+    "accent": "#A9CDFF",
+    "accent_alt": "#D8BCFF",
+    "red": "#E27682",
+    "green": "#44A96A",
+    "yellow": "#C99A24",
+    "blue": "#A9CDFF",
+    "cyan": "#32A6BC",
+    "teal": "#35A798",
+    "orange": "#D58249",
+    "pink": "#D8BCFF",
+    "selection": "#273245"
+  },
+  "targets": {
+    "herdr": {
+      "base_theme": "catppuccin",
+      "panel_background": "reset"
+    },
+    "omp": {
+      "colors": {
+        "borderMuted": "#9F9FC9",
+        "mdCodeBlockBorder": "#9F9FC9",
+        "mdQuoteBorder": "#9F9FC9",
+        "mdHr": "#9F9FC9",
+        "thinkingOff": "#9F9FC9",
+        "statusLineSep": "#9F9FC9"
+      }
+    },
+    "claude": {
+      "base": "dark",
+      "overrides": {}
+    },
+    "codex": {
+      "overrides": {},
+      "styles": {
+        "comment": [
+          "italic"
+        ],
+        "keyword": [
+          "bold"
+        ],
+        "heading": [
+          "bold"
+        ],
+        "link": [
+          "underline"
+        ],
+        "invalid": [
+          "bold"
+        ]
+      }
+    },
+    "hermes": {
+      "overrides": {}
+    }
+  }
+}

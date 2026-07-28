@@ -9,13 +9,19 @@ import shutil
 from time import perf_counter_ns
 from typing import Callable, Dict, Iterator, List, Optional, Tuple
 
-from .adapters import herdr, iterm2, omp
+from .adapters import claude_code, codex, herdr, hermes, iterm2, omp
 from .config import find_theme, load_config
 from .io import atomic_write_json, read_json
 from .models import Theme, UserConfig
 from .paths import (
     BACKUP_DIR,
+    CLAUDE_ACTIVE_THEME,
+    CLAUDE_SETTINGS,
+    CODEX_ACTIVE_THEME,
+    CODEX_CONFIG,
     HERDR_CONFIG,
+    HERMES_ACTIVE_SKIN,
+    HERMES_CONFIG,
     ITERM_PROFILE_FILE,
     OMP_ACTIVE_THEME,
     OMP_DIR,
@@ -74,6 +80,12 @@ def _backup_once() -> List[str]:
         (OMP_DIR / "config.yml", "omp-config.yml"),
         (OMP_ACTIVE_THEME, "omp-active-theme.json"),
         (HERDR_CONFIG, "herdr-config.toml"),
+        (CLAUDE_SETTINGS, "claude-settings.json"),
+        (CLAUDE_ACTIVE_THEME, "claude-active-theme.json"),
+        (CODEX_CONFIG, "codex-config.toml"),
+        (CODEX_ACTIVE_THEME, "codex-active-theme.tmTheme"),
+        (HERMES_CONFIG, "hermes-config.yaml"),
+        (HERMES_ACTIVE_SKIN, "hermes-active-skin.yaml"),
     )
     created = []
     for source, name in sources:
@@ -148,6 +160,9 @@ def _apply_locked(
         ),
         "omp": lambda: omp.apply_theme(theme),
         "herdr": lambda: herdr.apply_theme(theme),
+        "claude": lambda: claude_code.apply_theme(theme),
+        "codex": lambda: codex.apply_theme(theme),
+        "hermes": lambda: hermes.apply_theme(theme),
     }
     started = perf_counter_ns()
     with ThreadPoolExecutor(max_workers=len(actions)) as executor:
@@ -161,7 +176,14 @@ def _apply_locked(
         result.timings[name] = outcome.duration_ms
 
     errors = []
-    for name, label in (("iterm2", "iTerm2"), ("omp", "OMP"), ("herdr", "Herdr")):
+    for name, label in (
+        ("iterm2", "iTerm2"),
+        ("omp", "OMP"),
+        ("herdr", "Herdr"),
+        ("claude", "Claude Code"),
+        ("codex", "Codex CLI"),
+        ("hermes", "Hermes CLI"),
+    ):
         outcome = outcomes[name]
         if outcome.error:
             errors.append(f"{label}: {outcome.error}")

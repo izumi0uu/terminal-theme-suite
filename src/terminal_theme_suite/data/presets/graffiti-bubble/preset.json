@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "graffiti-bubble",
+  "order": 270,
+  "name": "Graffiti Bubble",
+  "description": "Urban cyan and coral over a deep ink-blue terminal",
+  "wallpaper": {
+    "file": "wallpaper.png",
+    "blend": 0.72,
+    "image_mode": 2
+  },
+  "ansi": [
+    "#B0BDD2",
+    "#E999A2",
+    "#65C187",
+    "#D9A729",
+    "#39D7F2",
+    "#FF89B4",
+    "#50BCD1",
+    "#F5F2F7",
+    "#C7CEDF",
+    "#EBA7B0",
+    "#7CC999",
+    "#DDB34A",
+    "#57DBF3",
+    "#FD9ABF",
+    "#6AC5D7",
+    "#F5F2F7"
+  ],
+  "colors": {
+    "background": "#0B1F35",
+    "background_alt": "#0E2A40",
+    "surface": "#1D3044",
+    "surface_alt": "#2C3D50",
+    "foreground": "#F5F2F7",
+    "muted": "#C7CEDF",
+    "dim": "#B0BDD2",
+    "accent": "#39D7F2",
+    "accent_alt": "#FF89B4",
+    "red": "#E999A2",
+    "green": "#65C187",
+    "yellow": "#D9A729",
+    "blue": "#39D7F2",
+    "cyan": "#50BCD1",
+    "teal": "#3EC2B0",
+    "orange": "#DFA177",
+    "pink": "#FF89B4",
+    "selection": "#15475F"
+  },
+  "targets": {
+    "herdr": {
+      "base_theme": "catppuccin",
+      "panel_background": "reset"
+    },
+    "omp": {
+      "colors": {
+        "borderMuted": "#B0BDD2",
+        "mdCodeBlockBorder": "#B0BDD2",
+        "mdQuoteBorder": "#B0BDD2",
+        "mdHr": "#B0BDD2",
+        "thinkingOff": "#B0BDD2",
+        "statusLineSep": "#B0BDD2"
+      }
+    },
+    "claude": {
+      "base": "dark",
+      "overrides": {}
+    },
+    "codex": {
+      "overrides": {},
+      "styles": {
+        "comment": [
+          "italic"
+        ],
+        "keyword": [
+          "bold"
+        ],
+        "heading": [
+          "bold"
+        ],
+        "link": [
+          "underline"
+        ],
+        "invalid": [
+          "bold"
+        ]
+      }
+    },
+    "hermes": {
+      "overrides": {}
+    }
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "showa-street",
+  "order": 320,
+  "name": "Showa Street",
+  "description": "Celadon daylight with Showa red and storefront teal",
+  "wallpaper": {
+    "file": "wallpaper.png",
+    "blend": 0.85,
+    "image_mode": 2
+  },
+  "ansi": [
+    "#3C4B6A",
+    "#A12230",
+    "#265F3B",
+    "#6A5113",
+    "#7D1C18",
+    "#005B70",
+    "#1C5C69",
+    "#17111E",
+    "#413966",
+    "#8B1F2D",
+    "#245336",
+    "#5D4715",
+    "#6D1A19",
+    "#044F63",
+    "#1B505D",
+    "#17111E"
+  ],
+  "colors": {
+    "background": "#DDE7DC",
+    "background_alt": "#E4ECE4",
+    "surface": "#E9F0E9",
+    "surface_alt": "#CCD6CC",
+    "foreground": "#17111E",
+    "muted": "#413966",
+    "dim": "#3C4B6A",
+    "accent": "#7D1C18",
+    "accent_alt": "#005B70",
+    "red": "#A12230",
+    "green": "#265F3B",
+    "yellow": "#6A5113",
+    "blue": "#7D1C18",
+    "cyan": "#1C5C69",
+    "teal": "#1E5E55",
+    "orange": "#7F451E",
+    "pink": "#005B70",
+    "selection": "#CEC7BD"
+  },
+  "targets": {
+    "herdr": {
+      "base_theme": "catppuccin-latte",
+      "panel_background": "reset"
+    },
+    "omp": {
+      "colors": {
+        "borderMuted": "#3C4B6A",
+        "mdCodeBlockBorder": "#3C4B6A",
+        "mdQuoteBorder": "#3C4B6A",
+        "mdHr": "#3C4B6A",
+        "thinkingOff": "#3C4B6A",
+        "statusLineSep": "#3C4B6A"
+      }
+    },
+    "claude": {
+      "base": "light",
+      "overrides": {}
+    },
+    "codex": {
+      "overrides": {},
+      "styles": {
+        "comment": [
+          "italic"
+        ],
+        "keyword": [
+          "bold"
+        ],
+        "heading": [
+          "bold"
+        ],
+        "link": [
+          "underline"
+        ],
+        "invalid": [
+          "bold"
+        ]
+      }
+    },
+    "hermes": {
+      "overrides": {}
+    }
+  }
+}

@@ -141,8 +141,127 @@
             }
           }
         },
-        "iterm2": {
-          "type": "object"
+        "claude": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["base", "overrides"],
+          "properties": {
+            "base": {
+              "enum": [
+                "dark",
+                "light",
+                "dark-daltonized",
+                "light-daltonized",
+                "dark-ansi",
+                "light-ansi"
+              ]
+            },
+            "overrides": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/$defs/color"
+              }
+            }
+          }
+        },
+        "codex": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["overrides"],
+          "properties": {
+            "overrides": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/$defs/color"
+              }
+            },
+            "styles": {
+              "type": "object",
+              "propertyNames": {
+                "enum": [
+                  "comment",
+                  "string",
+                  "regex",
+                  "number",
+                  "constant",
+                  "keyword",
+                  "operator",
+                  "storage",
+                  "type",
+                  "function",
+                  "variable",
+                  "parameter",
+                  "property",
+                  "tag",
+                  "attribute",
+                  "heading",
+                  "link",
+                  "punctuation",
+                  "invalid",
+                  "diff_added",
+                  "diff_removed",
+                  "diff_changed"
+                ]
+              },
+              "additionalProperties": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "enum": ["bold", "italic", "underline"]
+                }
+              }
+            }
+          }
+        },
+        "hermes": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["overrides"],
+          "properties": {
+            "overrides": {
+              "type": "object",
+              "propertyNames": {
+                "enum": [
+                  "banner_border",
+                  "banner_title",
+                  "banner_accent",
+                  "banner_dim",
+                  "banner_text",
+                  "ui_primary",
+                  "ui_accent",
+                  "ui_border",
+                  "ui_text",
+                  "ui_label",
+                  "ui_ok",
+                  "ui_error",
+                  "ui_warn",
+                  "prompt",
+                  "input_rule",
+                  "response_border",
+                  "status_bar_bg",
+                  "status_bar_text",
+                  "status_bar_strong",
+                  "status_bar_dim",
+                  "status_bar_good",
+                  "status_bar_warn",
+                  "status_bar_bad",
+                  "status_bar_critical",
+                  "session_label",
+                  "session_border",
+                  "voice_status_bg",
+                  "selection_bg",
+                  "completion_menu_bg",
+                  "completion_menu_current_bg",
+                  "completion_menu_meta_bg",
+                  "completion_menu_meta_current_bg",
+                  "shell_dollar"
+                ]
+              },
+              "additionalProperties": {
+                "$ref": "#/$defs/color"
+              }
+            }
+          }
         }
       }
     }

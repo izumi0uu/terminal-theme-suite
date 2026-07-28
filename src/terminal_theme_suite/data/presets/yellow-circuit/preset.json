@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "yellow-circuit",
+  "order": 120,
+  "name": "Yellow Circuit",
+  "description": "Signal yellow with deep navy and berry accents",
+  "wallpaper": {
+    "file": "wallpaper.png",
+    "blend": 0.7,
+    "image_mode": 2
+  },
+  "ansi": [
+    "#514312",
+    "#951F2D",
+    "#235737",
+    "#614A11",
+    "#123E68",
+    "#662553",
+    "#1A5560",
+    "#17111E",
+    "#423714",
+    "#811D2B",
+    "#214C33",
+    "#554113",
+    "#13375C",
+    "#59224B",
+    "#1A4A55",
+    "#17111E"
+  ],
+  "colors": {
+    "background": "#FFD51A",
+    "background_alt": "#FFDE4C",
+    "surface": "#FFE46C",
+    "surface_alt": "#ECC518",
+    "foreground": "#17111E",
+    "muted": "#423714",
+    "dim": "#514312",
+    "accent": "#123E68",
+    "accent_alt": "#662553",
+    "red": "#951F2D",
+    "green": "#235737",
+    "yellow": "#614A11",
+    "blue": "#123E68",
+    "cyan": "#1A5560",
+    "teal": "#1B564E",
+    "orange": "#743F1B",
+    "pink": "#662553",
+    "selection": "#D9BD26"
+  },
+  "targets": {
+    "herdr": {
+      "base_theme": "catppuccin-latte",
+      "panel_background": "reset"
+    },
+    "omp": {
+      "colors": {
+        "borderMuted": "#514312",
+        "mdCodeBlockBorder": "#514312",
+        "mdQuoteBorder": "#514312",
+        "mdHr": "#514312",
+        "thinkingOff": "#514312",
+        "statusLineSep": "#514312"
+      }
+    },
+    "claude": {
+      "base": "light",
+      "overrides": {}
+    },
+    "codex": {
+      "overrides": {},
+      "styles": {
+        "comment": [
+          "italic"
+        ],
+        "keyword": [
+          "bold"
+        ],
+        "heading": [
+          "bold"
+        ],
+        "link": [
+          "underline"
+        ],
+        "invalid": [
+          "bold"
+        ]
+      }
+    },
+    "hermes": {
+      "overrides": {}
+    }
+  }
+}

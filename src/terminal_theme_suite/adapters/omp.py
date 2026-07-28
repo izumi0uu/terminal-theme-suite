@@ -78,8 +78,11 @@ def _set_extensions(executable: str, extensions: List[str]) -> None:
 
 
 def _extension_source() -> str:
-    resource = resources.files("terminal_theme_suite").joinpath(
-        "data", "omp", "terminal-theme-suite.ts"
+    resource = (
+        resources.files("terminal_theme_suite")
+        .joinpath("data")
+        .joinpath("omp")
+        .joinpath("terminal-theme-suite.ts")
     )
     return resource.read_text(encoding="utf-8")
 

@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "id": "warrior-sky-cliff",
+  "order": 220,
+  "name": "Warrior Sky Cliff",
+  "description": "Stormy navy with open-sky cyan and ember accents",
+  "wallpaper": {
+    "file": "wallpaper.png",
+    "blend": 0.74,
+    "image_mode": 2
+  },
+  "ansi": [
+    "#ACB4D1",
+    "#E7909A",
+    "#57BB7C",
+    "#D2A126",
+    "#A8D9EE",
+    "#E0B9A0",
+    "#40B6CC",
+    "#F4F1F7",
+    "#C4C4DE",
+    "#E9A0A9",
+    "#70C490",
+    "#D7AE47",
+    "#B4DDEF",
+    "#E3C2AE",
+    "#5DBFD3",
+    "#F4F1F7"
+  ],
+  "colors": {
+    "background": "#101823",
+    "background_alt": "#19242F",
+    "surface": "#222934",
+    "surface_alt": "#303741",
+    "foreground": "#F4F1F7",
+    "muted": "#C4C4DE",
+    "dim": "#ACB4D1",
+    "accent": "#A8D9EE",
+    "accent_alt": "#E0B9A0",
+    "red": "#E7909A",
+    "green": "#57BB7C",
+    "yellow": "#D2A126",
+    "blue": "#A8D9EE",
+    "cyan": "#40B6CC",
+    "teal": "#3BBAA9",
+    "orange": "#DC986A",
+    "pink": "#E0B9A0",
+    "selection": "#314250"
+  },
+  "targets": {
+    "herdr": {
+      "base_theme": "catppuccin",
+      "panel_background": "reset"
+    },
+    "omp": {
+      "colors": {
+        "borderMuted": "#ACB4D1",
+        "mdCodeBlockBorder": "#ACB4D1",
+        "mdQuoteBorder": "#ACB4D1",
+        "mdHr": "#ACB4D1",
+        "thinkingOff": "#ACB4D1",
+        "statusLineSep": "#ACB4D1"
+      }
+    },
+    "claude": {
+      "base": "dark",
+      "overrides": {}
+    },
+    "codex": {
+      "overrides": {},
+      "styles": {
+        "comment": [
+          "italic"
+        ],
+        "keyword": [
+          "bold"
+        ],
+        "heading": [
+          "bold"
+        ],
+        "link": [
+          "underline"
+        ],
+        "invalid": [
+          "bold"
+        ]
+      }
+    },
+    "hermes": {
+      "overrides": {}
+    }
+  }
+}

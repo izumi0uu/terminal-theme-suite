@@ -1,4 +1,5 @@
 import plistlib
+import subprocess
 import tempfile
 import unittest
 from dataclasses import replace
@@ -7,9 +8,31 @@ from unittest.mock import patch
 
 from terminal_theme_suite.adapters import iterm2
 from terminal_theme_suite.config import load_config
+from terminal_theme_suite.models import TerminalTypography
 
 
 class ItermProfileTests(unittest.TestCase):
+    def test_enable_api_is_noop_when_already_enabled(self):
+        with (
+            patch.object(iterm2, "api_enabled", return_value=True),
+            patch.object(iterm2.subprocess, "run") as run,
+        ):
+            changed = iterm2.enable_api()
+
+        self.assertFalse(changed)
+        run.assert_not_called()
+
+    def test_enable_api_reports_when_preference_changed(self):
+        completed = subprocess.CompletedProcess([], 0, "", "")
+        with (
+            patch.object(iterm2, "api_enabled", return_value=False),
+            patch.object(iterm2.subprocess, "run", return_value=completed) as run,
+        ):
+            changed = iterm2.enable_api()
+
+        self.assertTrue(changed)
+        run.assert_called_once()
+
     def test_sync_profiles_generates_shortcuts_and_active_default(self):
         config = load_config()
         config.base_profile_guid = "BASE-GUID"
@@ -125,6 +148,68 @@ class ItermProfileTests(unittest.TestCase):
             profile["Background Color"],
             preferences["New Bookmarks"][0]["Background Color"],
         )
+
+    def test_managed_typography_overrides_inherited_profile_font(self):
+        config = load_config()
+        config.terminal_typography = TerminalTypography(
+            mode="managed",
+            font_family="JetBrainsMonoNFM-Regular",
+            non_ascii_font_family="MesloLGSNF-Regular",
+            font_size=15,
+            horizontal_spacing=1.1,
+            vertical_spacing=1.2,
+            ligatures=True,
+            use_bold_font=True,
+            use_italic_font=False,
+        )
+        preferences = {
+            "New Bookmarks": [
+                {
+                    "Name": "Default",
+                    "Guid": "BASE-GUID",
+                    "Default Bookmark": "Yes",
+                    "Normal Font": "OldFont-Regular 12",
+                }
+            ]
+        }
+        theme = config.themes[0]
+        with patch.object(iterm2, "_load_preferences", return_value=preferences):
+            profile = iterm2._profile(theme, config, theme.id)
+
+        self.assertEqual(profile["Normal Font"], "JetBrainsMonoNFM-Regular 15")
+        self.assertEqual(profile["Non Ascii Font"], "MesloLGSNF-Regular 15")
+        self.assertEqual(profile["Horizontal Spacing"], 1.1)
+        self.assertEqual(profile["Vertical Spacing"], 1.2)
+        self.assertTrue(profile["ASCII Ligatures"])
+        self.assertFalse(profile["Use Italic Font"])
+
+    def test_typography_status_reports_shared_generated_font(self):
+        config = load_config()
+        config.terminal_typography = TerminalTypography()
+        document = {
+            "Profiles": [
+                {
+                    "Normal Font": "MesloLGSNF-Regular 14",
+                    "Use Bold Font": True,
+                    "Use Italic Font": True,
+                },
+                {
+                    "Normal Font": "MesloLGSNF-Regular 14",
+                    "Use Bold Font": True,
+                    "Use Italic Font": True,
+                },
+            ]
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+            profile_file = Path(temporary) / "profiles.plist"
+            with profile_file.open("wb") as handle:
+                plistlib.dump(document, handle)
+            with patch.object(iterm2, "ITERM_PROFILE_FILE", profile_file):
+                ready, detail = iterm2.typography_status(config)
+
+        self.assertTrue(ready)
+        self.assertIn("MesloLGSNF-Regular 14", detail)
+        self.assertIn("bold=on", detail)
 
     def test_running_iterm_switches_through_daemon(self):
         with (
