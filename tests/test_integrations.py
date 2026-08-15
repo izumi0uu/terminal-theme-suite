@@ -51,6 +51,34 @@ class IntegrationTests(unittest.TestCase):
         self.assertEqual(message, "OMP theme file updated")
         self.assertIn("theme will apply on next OMP start", warning)
 
+    def test_omp_configure_theme_uses_configured_symbol_preset(self):
+        theme = next(theme for theme in self.config.themes if theme.id == "hero-amber")
+        completed = subprocess.CompletedProcess([], 0, "", "")
+        with tempfile.TemporaryDirectory() as temporary:
+            with (
+                patch.object(omp, "OMP_ACTIVE_THEME", Path(temporary) / "theme.json"),
+                patch.object(
+                    omp, "OMP_GENERATION_FILE", Path(temporary) / "generation.json"
+                ),
+                patch.object(omp, "OMP_RUNTIME_DIR", Path(temporary) / "runtime"),
+                patch.object(
+                    omp,
+                    "OMP_LIVE_RELOAD_EXTENSION",
+                    Path(temporary) / "omp-live-reload.ts",
+                ),
+                patch.object(omp, "_run", return_value=completed) as run,
+                patch.object(omp, "_running_omp_processes", return_value={}),
+            ):
+                message, _warning = omp.configure_theme(theme, symbol_preset="emoji")
+
+        symbol_sets = [
+            call.args[-3:]
+            for call in run.call_args_list
+            if call.args[-4:-1] == ("config", "set", "symbolPreset")
+        ]
+        self.assertEqual(symbol_sets, [("set", "symbolPreset", "emoji")])
+        self.assertIn("emoji", message)
+
     def test_omp_runtime_status_requires_loaded_extension_presence(self):
         with tempfile.TemporaryDirectory() as temporary:
             with (

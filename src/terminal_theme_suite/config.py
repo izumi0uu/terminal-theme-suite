@@ -21,6 +21,7 @@ DEFAULT_CONFIG: Dict[str, Any] = {
     "terminal_typography": {
         "mode": "inherit",
     },
+    "omp_symbol_preset": "nerd",
     "themes": {
         "hero-amber": {"enabled": True},
         "catppuccin": {"enabled": True},
@@ -261,6 +262,19 @@ def _theme_resource_paths() -> Iterable[Any]:
 def _validate_color(value: Any, field: str) -> None:
     if not isinstance(value, str) or not _COLOR_PATTERN.fullmatch(value):
         raise ValueError(f"{field} must be a six-digit hex color")
+
+
+def _omp_symbol_preset(value: Any) -> str:
+    """OMP symbol preset passed through to `omp config set symbolPreset`.
+
+    Validity is enforced by OMP itself so this package does not need to track
+    the preset names each OMP version supports.
+    """
+    if value is None:
+        return "nerd"
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError("omp_symbol_preset must be a non-empty string")
+    return value.strip()
 
 
 def _terminal_typography(value: Any) -> TerminalTypography:
@@ -637,6 +651,7 @@ def load_config() -> UserConfig:
     return UserConfig(
         themes=enabled,
         terminal_typography=_terminal_typography(raw.get("terminal_typography")),
+        omp_symbol_preset=_omp_symbol_preset(raw.get("omp_symbol_preset")),
         base_profile_guid=raw.get("base_profile_guid"),
         scope=str(raw.get("scope", "all")),
         shortcuts=bool(raw.get("shortcuts", True)),

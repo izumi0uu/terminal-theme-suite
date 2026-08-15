@@ -152,7 +152,7 @@ def _doctor() -> int:
     daemon_live = iterm2.daemon_ready() if iterm_running else True
     omp_installed = bool(shutil.which("omp"))
     omp_reload_ready, omp_reload_detail = (
-        omp.configuration_status()
+        omp.configuration_status(symbol_preset=config.omp_symbol_preset)
         if omp_installed
         else (True, "optional, OMP not found")
     )

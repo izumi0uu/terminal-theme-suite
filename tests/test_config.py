@@ -371,6 +371,39 @@ class ConfigTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "requires font_family and font_size"):
             config._terminal_typography({"mode": "managed"})
 
+    def test_omp_symbol_preset_defaults_to_nerd(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            config_path = Path(temporary) / "config.json"
+            config_path.write_text(json.dumps({"themes": {}}), encoding="utf-8")
+            with (
+                patch.object(config, "CONFIG_FILE", config_path),
+                patch.object(config, "ensure_user_dirs", lambda: None),
+            ):
+                loaded = config.load_config()
+
+        self.assertEqual(loaded.omp_symbol_preset, "nerd")
+
+    def test_omp_symbol_preset_is_loaded_from_config(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            config_path = Path(temporary) / "config.json"
+            config_path.write_text(
+                json.dumps({"omp_symbol_preset": "emoji", "themes": {}}),
+                encoding="utf-8",
+            )
+            with (
+                patch.object(config, "CONFIG_FILE", config_path),
+                patch.object(config, "ensure_user_dirs", lambda: None),
+            ):
+                loaded = config.load_config()
+
+        self.assertEqual(loaded.omp_symbol_preset, "emoji")
+
+    def test_omp_symbol_preset_rejects_blank_and_non_string(self):
+        with self.assertRaisesRegex(ValueError, "omp_symbol_preset"):
+            config._omp_symbol_preset("")
+        with self.assertRaisesRegex(ValueError, "omp_symbol_preset"):
+            config._omp_symbol_preset(7)
+
     def test_fresh_config_uses_bundled_backgrounds(self):
         with tempfile.TemporaryDirectory() as temporary:
             config_path = Path(temporary) / "config.json"

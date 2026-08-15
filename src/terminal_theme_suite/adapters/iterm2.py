@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import ctypes
+import ctypes.util
 import os
 import plistlib
 import shlex
@@ -234,6 +236,75 @@ def sync_profiles(config: UserConfig, active_theme_id: Optional[str]) -> Path:
     return ITERM_PROFILE_FILE
 
 
+# Sample codepoints: U+F000 sits inside the Nerd Fonts Font Awesome range and
+# U+E0B0 is the Powerline arrow; a Nerd Font covers at least one of them.
+_NERD_SAMPLE_CODEPOINTS = (0xF000, 0xE0B0)
+
+
+def _font_supports_nerd_glyphs(font_spec: str) -> Optional[bool]:
+    """Whether the iTerm2 font spec covers Nerd Font PUA codepoints.
+
+    Returns None when the check is unavailable (non-macOS, unknown font, or a
+    CoreText error) so callers can skip the check instead of misreporting.
+    """
+    family = font_spec.rsplit(" ", 1)[0] if " " in font_spec else font_spec
+    try:
+        core_text = ctypes.cdll.LoadLibrary(
+            ctypes.util.find_library("CoreText") or "CoreText.framework/CoreText"
+        )
+        core_foundation = ctypes.cdll.LoadLibrary(
+            ctypes.util.find_library("CoreFoundation")
+            or "CoreFoundation.framework/CoreFoundation"
+        )
+    except OSError:
+        return None
+
+    core_foundation.CFStringCreateWithCString.argtypes = [
+        ctypes.c_void_p,
+        ctypes.c_char_p,
+        ctypes.c_int32,
+    ]
+    core_foundation.CFStringCreateWithCString.restype = ctypes.c_void_p
+    core_foundation.CFRelease.argtypes = [ctypes.c_void_p]
+    core_text.CTFontCreateWithName.argtypes = [
+        ctypes.c_void_p,
+        ctypes.c_double,
+        ctypes.c_void_p,
+    ]
+    core_text.CTFontCreateWithName.restype = ctypes.c_void_p
+    core_text.CTFontGetGlyphsForCharacters.argtypes = [
+        ctypes.c_void_p,
+        ctypes.POINTER(ctypes.c_uint16),
+        ctypes.POINTER(ctypes.c_uint16),
+        ctypes.c_size_t,
+    ]
+    core_text.CTFontGetGlyphsForCharacters.restype = ctypes.c_bool
+
+    name = core_foundation.CFStringCreateWithCString(
+        None,
+        family.encode("utf-8"),
+        0x08000100,  # kCFStringEncodingUTF8
+    )
+    if not name:
+        return None
+    font = core_text.CTFontCreateWithName(name, 12.0, None)
+    core_foundation.CFRelease(name)
+    if not font:
+        return None
+    try:
+        for codepoint in _NERD_SAMPLE_CODEPOINTS:
+            characters = (ctypes.c_uint16 * 1)(codepoint)
+            glyphs = (ctypes.c_uint16 * 1)(0)
+            if (
+                core_text.CTFontGetGlyphsForCharacters(font, characters, glyphs, 1)
+                and glyphs[0] != 0
+            ):
+                return True
+        return False
+    finally:
+        core_foundation.CFRelease(font)
+
+
 def typography_status(config: UserConfig) -> tuple[bool, str]:
     try:
         with ITERM_PROFILE_FILE.open("rb") as handle:
@@ -258,9 +329,15 @@ def typography_status(config: UserConfig) -> tuple[bool, str]:
     fonts.discard("")
     if len(fonts) != 1:
         return False, "generated profiles do not share one terminal font"
+    font = next(iter(fonts))
+    supports_nerd = _font_supports_nerd_glyphs(font)
+    if supports_nerd is False:
+        return False, (
+            f"font {font} lacks Nerd Font glyphs; "
+            "set terminal_typography.font_family to a Nerd Font"
+        )
     bold = all(bool(profile.get("Use Bold Font", True)) for profile in profiles)
     italic = all(bool(profile.get("Use Italic Font", True)) for profile in profiles)
-    font = next(iter(fonts))
     return True, (
         f"{typography.mode}: {font}; bold={'on' if bold else 'off'}; "
         f"italic={'on' if italic else 'off'}"

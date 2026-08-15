@@ -1,5 +1,6 @@
 import plistlib
 import subprocess
+import sys
 import tempfile
 import unittest
 from dataclasses import replace
@@ -125,6 +126,7 @@ class ItermProfileTests(unittest.TestCase):
 
     def test_profile_carries_non_theme_source_overrides(self):
         config = load_config()
+        config.terminal_typography = TerminalTypography()
         preferences = {
             "New Bookmarks": [
                 {
@@ -204,12 +206,55 @@ class ItermProfileTests(unittest.TestCase):
             profile_file = Path(temporary) / "profiles.plist"
             with profile_file.open("wb") as handle:
                 plistlib.dump(document, handle)
-            with patch.object(iterm2, "ITERM_PROFILE_FILE", profile_file):
+            with (
+                patch.object(iterm2, "ITERM_PROFILE_FILE", profile_file),
+                patch.object(iterm2, "_font_supports_nerd_glyphs", return_value=True),
+            ):
                 ready, detail = iterm2.typography_status(config)
 
         self.assertTrue(ready)
         self.assertIn("MesloLGSNF-Regular 14", detail)
         self.assertIn("bold=on", detail)
+
+    def test_typography_status_reports_font_without_nerd_glyphs(self):
+        config = load_config()
+        config.terminal_typography = TerminalTypography()
+        document = {
+            "Profiles": [
+                {
+                    "Normal Font": "Monaco 12",
+                    "Use Bold Font": True,
+                    "Use Italic Font": True,
+                },
+            ]
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+            profile_file = Path(temporary) / "profiles.plist"
+            with profile_file.open("wb") as handle:
+                plistlib.dump(document, handle)
+            with (
+                patch.object(iterm2, "ITERM_PROFILE_FILE", profile_file),
+                patch.object(iterm2, "_font_supports_nerd_glyphs", return_value=False),
+            ):
+                ready, detail = iterm2.typography_status(config)
+
+        self.assertFalse(ready)
+        self.assertIn("lacks Nerd Font glyphs", detail)
+
+    @unittest.skipUnless(sys.platform == "darwin", "CoreText only exists on macOS")
+    def test_font_supports_nerd_glyphs_rejects_monaco(self):
+        self.assertIs(iterm2._font_supports_nerd_glyphs("Monaco 12"), False)
+
+    @unittest.skipUnless(sys.platform == "darwin", "CoreText only exists on macOS")
+    def test_font_supports_nerd_glyphs_accepts_installed_nerd_font(self):
+        result = iterm2._font_supports_nerd_glyphs("JetBrainsMonoNF-Regular 12")
+        if result is None:
+            self.skipTest("JetBrainsMono Nerd Font is not installed on this machine")
+        self.assertTrue(result)
+
+    def test_font_supports_nerd_glyphs_skips_when_coretext_unavailable(self):
+        with patch.object(iterm2.ctypes.cdll, "LoadLibrary", side_effect=OSError):
+            self.assertIsNone(iterm2._font_supports_nerd_glyphs("Monaco 12"))
 
     def test_running_iterm_switches_through_daemon(self):
         with (

@@ -42,6 +42,7 @@ class Theme:
 class UserConfig:
     themes: List[Theme]
     terminal_typography: TerminalTypography = field(default_factory=TerminalTypography)
+    omp_symbol_preset: str = "nerd"
     base_profile_guid: Optional[str] = None
     scope: str = "all"
     shortcuts: bool = True

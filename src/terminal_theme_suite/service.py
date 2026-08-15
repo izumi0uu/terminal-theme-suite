@@ -124,7 +124,10 @@ def configure_omp(theme_id: Optional[str] = None) -> Tuple[str, Optional[str]]:
         config = load_config()
         theme = find_theme(config, theme_id or current_theme_id(config))
         _backup_once()
-        return omp.configure_theme(theme)
+        return omp.configure_theme(
+            theme,
+            symbol_preset=config.omp_symbol_preset,
+        )
 
 
 def _apply_locked(

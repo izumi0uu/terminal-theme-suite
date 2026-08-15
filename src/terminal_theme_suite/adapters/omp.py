@@ -280,7 +280,10 @@ def live_reload_status(executable: Optional[str] = None) -> Tuple[bool, str]:
     return runtime_reload_status()
 
 
-def configuration_status(executable: Optional[str] = None) -> Tuple[bool, str]:
+def configuration_status(
+    executable: Optional[str] = None,
+    symbol_preset: str = "nerd",
+) -> Tuple[bool, str]:
     executable = executable or shutil.which("omp")
     if not executable:
         return False, "OMP is not installed"
@@ -288,7 +291,7 @@ def configuration_status(executable: Optional[str] = None) -> Tuple[bool, str]:
     expected = {
         "theme.dark": "terminal-theme-suite",
         "theme.light": "terminal-theme-suite",
-        "symbolPreset": "nerd",
+        "symbolPreset": symbol_preset,
     }
     drift = [
         key
@@ -468,7 +471,10 @@ def _wait_for_generation(
     )
 
 
-def configure_theme(theme: Theme) -> Tuple[str, str | None]:
+def configure_theme(
+    theme: Theme,
+    symbol_preset: str = "nerd",
+) -> Tuple[str, str | None]:
     generation = _write_theme(theme)
     executable = shutil.which("omp")
     if not executable:
@@ -478,7 +484,7 @@ def configure_theme(theme: Theme) -> Tuple[str, str | None]:
     for key, value in (
         ("theme.dark", "terminal-theme-suite"),
         ("theme.light", "terminal-theme-suite"),
-        ("symbolPreset", "nerd"),
+        ("symbolPreset", symbol_preset),
     ):
         result = _run(executable, "config", "set", key, value)
         if result.returncode != 0:
@@ -495,7 +501,10 @@ def configure_theme(theme: Theme) -> Tuple[str, str | None]:
     else:
         runtime_ready, runtime_detail = _wait_for_generation(generation)
         warning = None if runtime_ready else runtime_detail
-    return "OMP configured -> terminal-theme-suite (dark/light, Nerd Font)", warning
+    return (
+        f"OMP configured -> terminal-theme-suite (dark/light, {symbol_preset})",
+        warning,
+    )
 
 
 def apply_theme(theme: Theme) -> Tuple[str, str | None]:
