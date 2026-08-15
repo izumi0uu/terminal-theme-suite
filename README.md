@@ -28,7 +28,7 @@ There are 37 built-in suites; the complete wallpaper catalog is below.
 
 | Hero Amber | Catppuccin Mocha | Tokyo Night | Dracula |
 | --- | --- | --- | --- |
-| ![Hero Amber wallpaper](src/terminal_theme_suite/data/presets/hero-amber/wallpaper.png)
+| ![Hero Amber wallpaper](src/terminal_theme_suite/data/presets/hero-amber/wallpaper.png) | ![Catppuccin wallpaper](src/terminal_theme_suite/data/presets/catppuccin/wallpaper.png) | ![Tokyo Night wallpaper](src/terminal_theme_suite/data/presets/tokyo-night/wallpaper.png) | ![Dracula wallpaper](src/terminal_theme_suite/data/presets/dracula/wallpaper.png) |
 
 ## Wallpaper catalog
 
@@ -44,7 +44,6 @@ There are 37 built-in suites; the complete wallpaper catalog is below.
 <tr><td align="center"><img src="src/terminal_theme_suite/data/presets/wake-up-editorial/wallpaper.png" width="320" loading="lazy" alt="Wake Up Editorial wallpaper"><br><b>Wake Up Editorial</b></td><td align="center"><img src="src/terminal_theme_suite/data/presets/warrior-sky-cliff/wallpaper.png" width="320" loading="lazy" alt="Warrior Sky Cliff wallpaper"><br><b>Warrior Sky Cliff</b></td><td align="center"><img src="src/terminal_theme_suite/data/presets/whitecap-blue/wallpaper.png" width="320" loading="lazy" alt="Whitecap Blue wallpaper"><br><b>Whitecap Blue</b></td><td align="center"><img src="src/terminal_theme_suite/data/presets/whitehair-redline/wallpaper.png" width="320" loading="lazy" alt="Whitehair Redline wallpaper"><br><b>Whitehair Redline</b></td></tr>
 <tr><td align="center"><img src="src/terminal_theme_suite/data/presets/yellow-circuit/wallpaper.png" width="320" loading="lazy" alt="Yellow Circuit wallpaper"><br><b>Yellow Circuit</b></td></tr>
 </table>
- | ![Catppuccin wallpaper](src/terminal_theme_suite/data/presets/catppuccin/wallpaper.png) | ![Tokyo Night wallpaper](src/terminal_theme_suite/data/presets/tokyo-night/wallpaper.png) | ![Dracula wallpaper](src/terminal_theme_suite/data/presets/dracula/wallpaper.png) |
 
 ## Requirements
 
