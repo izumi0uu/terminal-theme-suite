@@ -252,6 +252,12 @@ class ItermProfileTests(unittest.TestCase):
             self.skipTest("JetBrainsMono Nerd Font is not installed on this machine")
         self.assertTrue(result)
 
+    @unittest.skipUnless(sys.platform == "darwin", "CoreText only exists on macOS")
+    def test_font_supports_nerd_glyphs_skips_unknown_font(self):
+        self.assertIsNone(
+            iterm2._font_supports_nerd_glyphs("MissingNerdFont-Regular 12")
+        )
+
     def test_font_supports_nerd_glyphs_skips_when_coretext_unavailable(self):
         with patch.object(iterm2.ctypes.cdll, "LoadLibrary", side_effect=OSError):
             self.assertIsNone(iterm2._font_supports_nerd_glyphs("Monaco 12"))

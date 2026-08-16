@@ -266,12 +266,21 @@ def _font_supports_nerd_glyphs(font_spec: str) -> Optional[bool]:
     ]
     core_foundation.CFStringCreateWithCString.restype = ctypes.c_void_p
     core_foundation.CFRelease.argtypes = [ctypes.c_void_p]
+    core_foundation.CFStringGetCString.argtypes = [
+        ctypes.c_void_p,
+        ctypes.c_char_p,
+        ctypes.c_long,
+        ctypes.c_uint32,
+    ]
+    core_foundation.CFStringGetCString.restype = ctypes.c_bool
     core_text.CTFontCreateWithName.argtypes = [
         ctypes.c_void_p,
         ctypes.c_double,
         ctypes.c_void_p,
     ]
     core_text.CTFontCreateWithName.restype = ctypes.c_void_p
+    core_text.CTFontCopyPostScriptName.argtypes = [ctypes.c_void_p]
+    core_text.CTFontCopyPostScriptName.restype = ctypes.c_void_p
     core_text.CTFontGetGlyphsForCharacters.argtypes = [
         ctypes.c_void_p,
         ctypes.POINTER(ctypes.c_uint16),
@@ -292,6 +301,23 @@ def _font_supports_nerd_glyphs(font_spec: str) -> Optional[bool]:
     if not font:
         return None
     try:
+        actual_name = core_text.CTFontCopyPostScriptName(font)
+        if not actual_name:
+            return None
+        try:
+            buffer = ctypes.create_string_buffer(512)
+            if not core_foundation.CFStringGetCString(
+                actual_name,
+                buffer,
+                len(buffer),
+                0x08000100,  # kCFStringEncodingUTF8
+            ):
+                return None
+            if buffer.value.decode("utf-8") != family:
+                return None
+        finally:
+            core_foundation.CFRelease(actual_name)
+
         for codepoint in _NERD_SAMPLE_CODEPOINTS:
             characters = (ctypes.c_uint16 * 1)(codepoint)
             glyphs = (ctypes.c_uint16 * 1)(0)

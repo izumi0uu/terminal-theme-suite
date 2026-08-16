@@ -66,6 +66,7 @@ class IntegrationTests(unittest.TestCase):
                     "OMP_LIVE_RELOAD_EXTENSION",
                     Path(temporary) / "omp-live-reload.ts",
                 ),
+                patch.object(omp.shutil, "which", return_value="/mock/bin/omp"),
                 patch.object(omp, "_run", return_value=completed) as run,
                 patch.object(omp, "_running_omp_processes", return_value={}),
             ):
